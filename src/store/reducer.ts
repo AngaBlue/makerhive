@@ -1,7 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import user from "./slices/user";
+import items from "./slices/items";
 
-export default combineReducers({
-    user
+const rootReducer = combineReducers({
+    user,
+    items
 })
+
+export type RootState = ReturnType<typeof rootReducer>
+export default rootReducer

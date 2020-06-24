@@ -1,33 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import MuiThemeProvider from '@material-ui/styles/ThemeProvider';
-import theme from "./theme";
+import Layout from "./layout/Layout";
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import "./App.module.less"
 
-import Nav from "./components/Nav";
+//Routes
+const Index = React.lazy(() => import("./pages/Index"));
 
 function App() {
   return (
-    <div className="App">
-      <MuiThemeProvider theme={theme}>
-        <Nav />
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-        </a>
-        </header>
-      </MuiThemeProvider>
-    </div>
-  );
+    <BrowserRouter>
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={Index} />
+        </Switch>
+      </Layout>
+    </BrowserRouter>
+  )
 }
 
 export default App;

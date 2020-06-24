@@ -1,43 +1,43 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, fetchUser } from "../api/User";
+import { Item, fetchItems } from "../api/Item";
 import AsyncState from "../AsyncState";
 import { APIError } from "../api/Error";
 import { AppThunk } from "../store";
 
-type UserState = User | null;
+type ItemsState = Item[] | null;
 
-const initialState = AsyncState(null as UserState);
+const initialState = AsyncState(null as ItemsState);
 
 const userSlice = createSlice({
-  name: "user",
+  name: "items",
   initialState,
   reducers: {
-    getUserStart: (state) => {
+    getItemsStart: (state) => {
       state.loading = true;
       state.error = null;
     },
-    getUserSuccess: (state, action: PayloadAction<User>) => {
+    getItemsSuccess: (state, action: PayloadAction<ItemsState>) => {
       state.loading = false;
       state.updated = new Date()
       state.data = action.payload;
     },
-    getUserFailure: (state, action: PayloadAction<APIError>) => {
+    getItemsFailure: (state, action: PayloadAction<APIError>) => {
       state.error = action.payload;
     },
   },
 });
 
 export const {
-  getUserStart,
-  getUserFailure,
-  getUserSuccess,
+  getItemsStart,
+  getItemsFailure,
+  getItemsSuccess,
 } = userSlice.actions;
 
 export const getUser = (): AppThunk => async (dispatch) => {
-  dispatch(getUserStart());
-  const res = await fetchUser();
-  if (res.error) dispatch(getUserFailure(res.error));
-  if (res.payload) dispatch(getUserSuccess(res.payload));
+  dispatch(getItemsStart());
+  const res = await fetchItems();
+  if (res.error) dispatch(getItemsFailure(res.error));
+  if (res.payload) dispatch(getItemsSuccess(res.payload));
 };
 
 export default userSlice.reducer;
