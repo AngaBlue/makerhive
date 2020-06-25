@@ -1,5 +1,5 @@
 export interface Rank {
-  id: number;
-  name: string;
-  permissions: number;
+    id: number;
+    name: string;
+    permissions: number;
 }

@@ -5,15 +5,16 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
-  key: "state",
-  storage,
+    key: "state",
+    storage,
+    whitelist: []
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: [thunk],
+    reducer: persistedReducer,
+    middleware: [thunk]
 });
 
 export const persistor = persistStore(store);

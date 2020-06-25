@@ -1,43 +1,21 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User, fetchUser } from "../api/User";
-import AsyncState from "../AsyncState";
-import { APIError } from "../api/Error";
 import { AppThunk } from "../store";
+import AsyncSlice, { getAsyncOptions, throttle } from "../AsyncSlice";
 
 type UserState = User | null;
 
-const initialState = AsyncState(null as UserState);
+const { slice, reducer } = AsyncSlice<UserState>({ name: "user", initialState: null, reducers: {} });
 
-const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers: {
-    getUserStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    getUserSuccess: (state, action: PayloadAction<User>) => {
-      state.loading = false;
-      state.updated = new Date()
-      state.data = action.payload;
-    },
-    getUserFailure: (state, action: PayloadAction<APIError>) => {
-      state.error = action.payload;
-    },
-  },
-});
+export const { getDataStart, getDataFailure, getDataSuccess } = slice.actions;
 
-export const {
-  getUserStart,
-  getUserFailure,
-  getUserSuccess,
-} = userSlice.actions;
-
-export const getUser = (): AppThunk => async (dispatch) => {
-  dispatch(getUserStart());
-  const res = await fetchUser();
-  if (res.error) dispatch(getUserFailure(res.error));
-  if (res.payload) dispatch(getUserSuccess(res.payload));
+export const getUser = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
+    if (options) {
+        if (options.throttle && throttle(options.throttle.requested, options.throttle.timeout)) return;
+    }
+    dispatch(getDataStart());
+    const res = await fetchUser();
+    if (res.error) dispatch(getDataFailure(res.error));
+    if (res.payload) dispatch(getDataSuccess(res.payload));
 };
 
-export default userSlice.reducer;
+export default reducer;

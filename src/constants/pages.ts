@@ -1,4 +1,4 @@
-import { DashboardOutlined, AppstoreOutlined } from "@ant-design/icons"
+import { DashboardOutlined, AppstoreOutlined } from "@ant-design/icons";
 
 export default [
     {
@@ -13,4 +13,4 @@ export default [
         route: "/dashboard",
         authenticated: true
     }
-]
+];

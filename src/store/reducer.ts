@@ -6,7 +6,7 @@ import items from "./slices/items";
 const rootReducer = combineReducers({
     user,
     items
-})
+});
 
-export type RootState = ReturnType<typeof rootReducer>
-export default rootReducer
+export type RootState = ReturnType<typeof rootReducer>;
+export default rootReducer;
