@@ -1,9 +1,14 @@
 const path = require("path");
 const CracoAntDesignPlugin = require("craco-antd");
 const CracoLessPlugin = require("craco-less");
+const CracoWorkboxPlugin = require('craco-workbox');
+
 
 module.exports = {
     plugins: [
+        {
+            plugin: CracoWorkboxPlugin
+          },
         {
             plugin: CracoAntDesignPlugin,
             options: {

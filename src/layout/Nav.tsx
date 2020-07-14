@@ -3,13 +3,14 @@ import { Menu, Drawer, Avatar, Button, Typography, Skeleton } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import styles from "./Nav.module.less";
 import { ClickParam } from "antd/lib/menu";
-import navItems from "../constants/pages";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { getUser } from "../store/slices/user";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/reducer";
 import { UserOutlined } from "@ant-design/icons";
+import banner from "../images/banner.svg";
+import pages from "../constants/pages";
 
 export function MobileNav() {
     const [state, setState] = React.useState({ open: false });
@@ -18,7 +19,7 @@ export function MobileNav() {
         <>
             <div className={styles.topNav}>
                 <Link to="/">
-                    <img src="/banner.svg" alt="Makerhive" className={styles.banner} />
+                    <img src={banner} alt="Makerhive" className={styles.banner} />
                 </Link>
                 <MenuOutlined
                     onClick={() => setState({ open: !state.open })}
@@ -31,8 +32,7 @@ export function MobileNav() {
                 placement="left"
                 forceRender={true}
                 closable={false}
-                bodyStyle={{ padding: 0 }}
-            >
+                bodyStyle={{ padding: 0 }}>
                 <Nav close={close} />
             </Drawer>
         </>
@@ -44,32 +44,49 @@ export function Nav(props: { close?: (param: ClickParam) => void }) {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     useEffect(() => {
-        if (!user.data && !user.loading)
-            dispatch(getUser({ throttle: { requested: user.requested, timeout: 5 * 60 * 1000 } }));
+        if (!user.loading) dispatch(getUser({ throttle: { requested: user.requested, timeout: 5 * 60 * 1000 } }));
+    });
+    let userPerms = user.data ? user.data.rank.permissions : -10;
+    let navPages = pages.filter((p) => {
+        if (!p.nav) return false;
+        if (p.authenticated && !user.data) return false;
+        if (p.permissions !== null && userPerms < p.permissions) return false;
+        return true;
     });
     return (
         <div className={styles.nav}>
-            <Link to="/">
-                <img src="/banner.svg" alt="Makerhive" className={styles.banner} />
+            <Link to="/" style={{ display: "contents" }}>
+                <img src={banner} alt="Makerhive" className={styles.banner} />
             </Link>
             {user.data ? (
                 <div className={styles.user}>
-                    <Avatar src={user.data.image} icon={<UserOutlined />} size="large" />
+                    <Avatar
+                        src={`https://makerhive.anga.blue/static/images/user/${user.data.image}.jpg`}
+                        icon={<UserOutlined />}
+                        size="large"
+                    />
                     <Typography.Text className={styles.username}>{user.data.name}</Typography.Text>
                 </div>
             ) : user.loading ? (
                 <div className={styles.userSkeleton}>
-                    <Skeleton.Avatar active size="large" />
+                    <Skeleton.Avatar active size="large" className={styles.avatar} />
                     <Skeleton.Input active size="small" className={styles.username} />
                 </div>
             ) : (
-                <Button>Login</Button>
+                <div className={styles.login}>
+                    <Link to="/auth/google">
+                        <Button>Login</Button>
+                    </Link>
+                </div>
             )}
             <Menu selectedKeys={[location.pathname]} mode="vertical" onClick={props.close} className={styles.menu}>
-                {navItems.map((item) => {
+                {navPages.map((page) => {
                     return (
-                        <Menu.Item key={item.route} icon={<item.icon />} className={styles.menuItem}>
-                            <Link to={item.route}>{item.name}</Link>
+                        <Menu.Item
+                            key={page.route}
+                            icon={page.icon !== null ? <page.icon /> : null}
+                            className={styles.menuItem}>
+                            <Link to={page.route}>{page.name}</Link>
                         </Menu.Item>
                     );
                 })}

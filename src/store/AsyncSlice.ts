@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, SliceCaseReducers, Draft } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, Draft, SliceCaseReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import { APIError } from "./api/Error";
 import storage from "redux-persist/lib/storage";
@@ -43,7 +43,7 @@ export default function AsyncSlice<State>(slice: {
     return {
         reducer: persistReducer(
             {
-                key: slice.name,
+                key: `makerhive-${slice.name}`,
                 storage,
                 blacklist: ["loading", "requested", "error"]
             },

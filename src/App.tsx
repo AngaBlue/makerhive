@@ -1,18 +1,21 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Layout from "./layout/Layout";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.module.less";
-
-//Routes
-const Index = React.lazy(() => import("./pages/Index"));
+import pages from "./constants/pages";
+import RouteHandler from "./components/RouteHandler";
+import Error from "./pages/Error";
 
 function App() {
     return (
         <BrowserRouter>
             <Layout>
-                <Switch>
-                    <Route exact path="/" component={Index} />
-                </Switch>
+                <Suspense fallback={"Loading..."}>
+                    <Switch>
+                        {pages.map((p) => RouteHandler(p))}
+                        <Route component={() => <Error name="Not Found" message="Page not found" />} />
+                    </Switch>
+                </Suspense>
             </Layout>
         </BrowserRouter>
     );

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Input, Select } from "antd";
+import { Input, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/reducer";
-import { getUser } from "../store/slices/items";
 import ItemCard from "../components/ItemCard";
 import styles from "./Index.module.less";
+import { getItems } from "../store/slices/items";
+import CardContainer from "../components/CardContainer";
 
 export default function Index() {
     const dispatch = useDispatch();
     const items = useSelector((state: RootState) => state.items);
-
     useEffect(() => {
-        if (!items.data && !items.loading) dispatch(getUser());
+        if (!items.loading) dispatch(getItems({ throttle: { requested: items.requested, timeout: 5 * 60 * 1000 } }));
     });
 
     const [filters, setFilters] = useState({ name: "", sorting: "name-az" });
-    let filteredItems = items.data;
+    let filteredItems = [...(items.data || [])];
     if (filteredItems) {
         //Filter Name
         if (filters.name) {
@@ -57,24 +57,17 @@ export default function Index() {
     return (
         <div className={styles.index}>
             <div className={styles.filters}>
-                <Input.Search placeholder="Search items..." onChange={setNameFilter} style={{ width: 200 }} />
-                <div>
-                    <Select defaultValue="name-az" onSelect={setSorting} className={styles.sorting}>
-                        <Select.Option value="name-az">Name (A-Z)</Select.Option>
-                        <Select.Option value="name-za">Name (Z-A)</Select.Option>
-                        <Select.Option value="quantity-desc">Quantity (Desc)</Select.Option>
-                        <Select.Option value="quantity-asc">Quantity (Asc)</Select.Option>
-                    </Select>
-                </div>
+                <Input.Search placeholder="Search items..." onChange={setNameFilter} className={styles.search} />
+                <Select defaultValue="name-az" onSelect={setSorting} className={styles.sorting}>
+                    <Select.Option value="name-az">Name (A-Z)</Select.Option>
+                    <Select.Option value="name-za">Name (Z-A)</Select.Option>
+                    <Select.Option value="quantity-desc">Quantity (Desc)</Select.Option>
+                    <Select.Option value="quantity-asc">Quantity (Asc)</Select.Option>
+                </Select>
             </div>
-            <Row className={styles.items}>
-                {filteredItems && filteredItems.map((item) => <ItemCard item={item} key={item.id} />)}
-                {Array(10)
-                    .fill(null)
-                    .map((_, i) => (
-                        <Col className={styles.itemFiller} key={i} />
-                    ))}
-            </Row>
+            <CardContainer className={styles.items}>
+                {filteredItems && filteredItems.map((item) => <ItemCard {...item} key={item.id} />)}
+            </CardContainer>
         </div>
     );
 }

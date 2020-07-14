@@ -1,0 +1,23 @@
+.container {
+    flex-wrap: wrap;
+    margin: -8px -8px 8px;
+    width: calc(100% + 8px);
+    position: relative;
+    top: 8px;
+
+    & > :global(.ant-col) {
+        width: 100%;
+        flex: 1 1 1%;
+        min-width: 200px;
+
+        &:not(:local(.ant-col)) {
+            margin: 8px;
+        }
+    }
+}
+
+.filler {
+    height: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}

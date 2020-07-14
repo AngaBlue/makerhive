@@ -1,39 +1,26 @@
 .index {
-    padding: 16px
+    padding: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .filters {
+  display: flex;
+  justify-content: space-between;
     margin-bottom: 16px;
+
+    > * {
+      flex: 0 1 160px;
+    }
+
+    .search {
+      flex-basis: 200px;
+      margin-right: 16px;
+    }
 }
 
 .items {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  margin: -8px -8px 8px;
-
-  & > :global(.ant-col) {
-    width: 100%;
-    flex: 1 1 1%;
-    min-width: 200px;
-
-    &:not(:local(.ant-col)) {
-      margin: 8px;
-    }
-  }
-}
-
-.itemFiller {
-  height: 0;
-}
-
-.filters {
-    display: flex;
-    justify-content: space-between;
-}
-
-.sorting {
-    width: 164px
+  overflow-y: auto;
+  flex-grow: 1;
 }
