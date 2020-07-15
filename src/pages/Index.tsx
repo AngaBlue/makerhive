@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Input, Select } from "antd";
+import { Input, Select, Button, Typography } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/reducer";
-import ItemCard from "../components/ItemCard";
 import styles from "./Index.module.less";
 import { getItems } from "../store/slices/items";
 import CardContainer from "../components/CardContainer";
+import Card from "../components/Card";
+import { EyeOutlined, LogoutOutlined } from "@ant-design/icons";
 
 export default function Index() {
     const dispatch = useDispatch();
@@ -66,7 +67,36 @@ export default function Index() {
                 </Select>
             </div>
             <CardContainer className={styles.items}>
-                {filteredItems && filteredItems.map((item) => <ItemCard {...item} key={item.id} />)}
+                {filteredItems &&
+                    filteredItems.map((item) => (
+                        <Card
+                            name={item.name}
+                            image={item.image}
+                            actions={[
+                                <Button type="ghost" icon={<EyeOutlined />} className={styles.action}>
+                                    Details
+                                </Button>,
+                                <Button type="ghost" icon={<LogoutOutlined />} className={styles.action}>
+                                    Borrow
+                                </Button>
+                            ]}
+                            details={
+                                <div className={styles.info}>
+                                    <Typography.Text>
+                                        <Typography.Text strong>Quantity:</Typography.Text> {item.quantity}
+                                    </Typography.Text>
+                                    <Typography.Text>
+                                        <Typography.Text strong>Available:</Typography.Text> {item.available}
+                                    </Typography.Text>
+                                    <Typography.Text className={styles.location}>
+                                        <Typography.Text strong>Location:</Typography.Text>{" "}
+                                        {item.location || "Unknown"}
+                                    </Typography.Text>
+                                </div>
+                            }
+                            key={item.id}
+                        />
+                    ))}
             </CardContainer>
         </div>
     );
