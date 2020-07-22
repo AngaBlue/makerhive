@@ -1,3 +1,6 @@
+@import "../../variables.less";
+@import "../../animations.less";
+
 .card {
     display: flex;
     flex: 1 1 1%;
@@ -35,6 +38,8 @@
     width: 100%;
     height: 100%;
     border-radius: 8px;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .image {
@@ -43,4 +48,13 @@
     height: 0;
     padding-top: calc(200% / 3); //3:2 Aspect Ratio
     background-size: cover;
+}
+
+.disabled {
+    &:extend(.overlay);
+    cursor: not-allowed;
+    background-color: fade(@layout-body-background, 60%);
+    pointer-events: visible;
+    user-select: none;
+    animation: fadein ease-out 0.2s;
 }

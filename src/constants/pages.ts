@@ -5,6 +5,7 @@ import React from "react";
 const Index = React.lazy(() => import("../pages/Index"));
 const AddItem = React.lazy(() => import("../pages/admin/AddItem"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
+const Item = React.lazy(() => import("../pages/Item"));
 
 const pages: Page[] = [
     new Page({
@@ -30,6 +31,11 @@ const pages: Page[] = [
         authenticated: true,
         permissions: 5,
         nav: true
+    }),
+    new Page({
+        name: "Item",
+        component: Item,
+        route: "/items/:id/:name"
     })
 ];
 export default pages;

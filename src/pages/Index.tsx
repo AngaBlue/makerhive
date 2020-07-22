@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/reducer";
 import styles from "./Index.module.less";
 import { getItems } from "../store/slices/items";
-import CardContainer from "../components/CardContainer";
-import Card from "../components/Card";
+import CardContainer from "../components/cards/CardContainer";
+import Card from "../components/cards/Card";
 import { EyeOutlined, LogoutOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import URLSafe from "../components/URLSafe";
 
 export default function Index() {
     const dispatch = useDispatch();
@@ -73,9 +75,11 @@ export default function Index() {
                             name={item.name}
                             image={item.image}
                             actions={[
-                                <Button type="ghost" icon={<EyeOutlined />} className={styles.action}>
-                                    Details
-                                </Button>,
+                                <Link to={`/items/${item.id}/${URLSafe(item.name)}`}>
+                                    <Button type="ghost" icon={<EyeOutlined />} className={styles.action}>
+                                        Details
+                                    </Button>
+                                </Link>,
                                 <Button type="ghost" icon={<LogoutOutlined />} className={styles.action}>
                                     Borrow
                                 </Button>
@@ -89,8 +93,7 @@ export default function Index() {
                                         <Typography.Text strong>Available:</Typography.Text> {item.available}
                                     </Typography.Text>
                                     <Typography.Text className={styles.location}>
-                                        <Typography.Text strong>Location:</Typography.Text>{" "}
-                                        {item.location || "Unknown"}
+                                        <Typography.Text strong>Location:</Typography.Text> {item.location || "Unknown"}
                                     </Typography.Text>
                                 </div>
                             }

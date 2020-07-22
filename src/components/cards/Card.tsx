@@ -1,14 +1,15 @@
 import React from "react";
 import { Card as AntCard, Col } from "antd";
 import styles from "./Card.module.less";
-import logo from "../images/logo.svg";
+import logo from "../../images/logo.svg";
 
 export default function Card(props: {
     name: string,
     image?: string,
     actions?: React.ReactNode[],
     details?: React.ReactNode,
-    overlay?: string
+    overlay?: string,
+    disabled?: boolean,
 }) {
     return (
         <Col className={styles.col}>
@@ -28,6 +29,7 @@ export default function Card(props: {
                 <AntCard.Meta title={props.name}></AntCard.Meta>
                 {props.details}
                 {props.overlay ? <div className={styles.overlay} style={{backgroundColor: props.overlay}}/> : null }
+                {props.disabled ? <div className={styles.disabled}/> : null }
             </AntCard>
         </Col>
     );

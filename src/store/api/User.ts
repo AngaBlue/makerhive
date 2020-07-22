@@ -1,4 +1,6 @@
 import { Rank } from "./Rank";
+import { Reservation } from "./Reservation";
+
 import { request, APIResponse } from "./api";
 import { Loan } from "./Loan";
 
@@ -12,7 +14,7 @@ export interface User {
 }
 
 export interface UserProfile extends User {
-    reservations: string[]
+    reservations: Reservation[]
     loans: Loan[]
 }
 
