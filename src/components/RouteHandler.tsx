@@ -11,8 +11,9 @@ const RouteHandler = (props: Page) => {
     const user = useSelector(
         (state: RootState) => state.user.data,
         (l, r) => {
-            if (l && r) return l.rank.id === r.rank.id;
-            else return false;
+            let old = l ? l.rank.id : null;
+            let updated = r ? r.rank.id : null;
+            return (old === updated)
         }
     );
     //Conditionally Render Component
@@ -29,7 +30,7 @@ const RouteHandler = (props: Page) => {
             );
         }
     }
-    return <Route path={props.route} exact={props.exact} component={props.component} />;
+    return <Route path={props.route} exact={props.exact} component={props.component} key={props.route}/>;
 };
 
 export default RouteHandler;
