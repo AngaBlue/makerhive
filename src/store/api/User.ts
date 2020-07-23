@@ -30,3 +30,9 @@ export async function fetchUserProfile(payload: User["id"]) {
         payload
     })) as APIResponse<UserProfile>;
 }
+
+export async function fetchAllUsers() {
+    return (await request({
+        type: "GET_ALL_USERS"
+    })) as APIResponse<User[]>;
+}

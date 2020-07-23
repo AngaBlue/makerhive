@@ -17,6 +17,7 @@
         "craco-workbox": "^0.1.0",
         "moment": "^2.27.0",
         "react": "^16.13.1",
+        "react-cool-img": "^1.2.1",
         "react-dom": "^16.13.1",
         "react-lazyload": "^2.6.8",
         "react-redux": "^7.2.0",

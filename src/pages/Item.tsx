@@ -13,6 +13,7 @@ import { ColumnsType } from "antd/lib/table";
 import { Reservation } from "../store/api/Reservation";
 import { Loan } from "../store/api/Loan";
 import logo from "../images/logo.svg";
+import Img from "react-cool-img";
 
 export default function Item() {
     const [state, setState] = useState<{ loading: boolean; error: APIError | null; data: DetailedItem | null }>({
@@ -60,11 +61,11 @@ export default function Item() {
             <div className={styles.main}>
                 <Row gutter={[16, 16]}>
                     <Col xs={24} lg={8} className={styles.imageContainer}>
-                        <div
+                        <Img
                             className={styles.image}
-                            style={{
-                                backgroundImage: `url(https://makerhive.anga.blue/static/images/item/${state.data.image}.jpg), url(${logo})`
-                            }}></div>
+                            placeholder={logo}
+                            src={`https://makerhive.anga.blue/static/images/item/${state.data.image}.jpg`}
+                            alt={state.data.name}></Img>
                     </Col>
                     <Col xs={24} lg={16}>
                         <Typography.Title>{state.data.name}</Typography.Title>
