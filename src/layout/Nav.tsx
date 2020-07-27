@@ -74,9 +74,9 @@ export function Nav(props: { close?: (param: ClickParam) => void }) {
                 </div>
             ) : (
                 <div className={styles.login}>
-                    <Link to="/auth/google">
-                        <Button>Login</Button>
-                    </Link>
+                    <a href="/auth/google">
+                        <Button>L   ogin</Button>
+                    </a>
                 </div>
             )}
             <Menu selectedKeys={[location.pathname]} mode="vertical" onClick={props.close} className={styles.menu}>

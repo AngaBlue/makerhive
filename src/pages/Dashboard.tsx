@@ -31,7 +31,7 @@ export default function Dashboard() {
         <div className={styles.main}>
             <Row className={styles.user} align="middle" justify="space-between">
                 <Col>
-                    <Typography.Title level={2}>{user.data.name}</Typography.Title>
+                    <Typography.Title>{user.data.name}</Typography.Title>
                     <Typography.Paragraph>{user.data.email}</Typography.Paragraph>
                     <Typography.Paragraph>{user.data.rank.name}</Typography.Paragraph>
                 </Col>
