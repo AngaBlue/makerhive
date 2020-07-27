@@ -1,4 +1,4 @@
-import { DashboardOutlined, AppstoreOutlined, PlusOutlined } from "@ant-design/icons";
+import { DashboardOutlined, AppstoreOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 import { Page } from "./Page";
 import React from "react";
 
@@ -7,6 +7,7 @@ const AddItem = React.lazy(() => import("../pages/admin/AddItem"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
 const Item = React.lazy(() => import("../pages/Item"));
 const EditItem = React.lazy(() => import("../pages/admin/EditItem"));
+const Users = React.lazy(() => import("../pages/admin/Users"));
 
 const pages: Page[] = [
     new Page({
@@ -44,6 +45,15 @@ const pages: Page[] = [
         name: "Item",
         component: Item,
         route: "/items/:id/:name"
+    }),
+    new Page({
+        name: "Users",
+        component: Users,
+        route: "/admin/users",
+        authenticated: true,
+        permissions: 5,
+        nav: true,
+        icon: UserOutlined
     })
 ];
 export default pages;
