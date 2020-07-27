@@ -32,9 +32,16 @@ export async function fetchItems() {
     })) as APIResponse<Item[]>;
 }
 
+export async function fetchDetailedItem(id: Item["id"]) {
+    return (await request({
+        type: "GET_ITEM_DETAILED",
+        payload: id
+    })) as APIResponse<DetailedItem>;
+}
+
 export async function fetchItem(id: Item["id"]) {
     return (await request({
         type: "GET_ITEM",
         payload: id
-    })) as APIResponse<DetailedItem>;
+    })) as APIResponse<Item>;
 }

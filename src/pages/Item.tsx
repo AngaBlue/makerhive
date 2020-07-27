@@ -3,7 +3,7 @@ import styles from "./Item.module.less";
 import { useParams } from "react-router-dom";
 import Error from "./Error";
 import { APIError } from "../store/api/Error";
-import { DetailedItem, fetchItem } from "../store/api/Item";
+import { DetailedItem, fetchDetailedItem } from "../store/api/Item";
 import { Row, Col, Typography, Table } from "antd";
 import Loading from "../components/Loading";
 import { RootState } from "../";
@@ -26,7 +26,7 @@ export default function Item() {
 
     const fetchDetails = async (id: number) => {
         setState({ ...state, loading: true, error: null });
-        let response = await fetchItem(id);
+        let response = await fetchDetailedItem(id);
         if (response.error) return setState({ ...state, loading: false, error: response.error });
         if (response.payload) return setState({ ...state, loading: false, data: response.payload });
     };
@@ -78,9 +78,9 @@ export default function Item() {
                     </Col>
                 </Row>
                 <Typography.Title level={2}>Loans</Typography.Title>
-                <Table dataSource={state.data.loans} columns={loanColumns} pagination={false} />
+                <Table dataSource={state.data.loans} columns={loanColumns} pagination={false} className={styles.table}/>
                 <Typography.Title level={2}>Reservations</Typography.Title>
-                <Table dataSource={state.data.reservations} columns={reservationColumns} pagination={false} />
+                <Table dataSource={state.data.reservations} columns={reservationColumns} pagination={false} className={styles.table}/>
             </div>
         );
     }
