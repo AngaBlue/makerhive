@@ -14,8 +14,8 @@ export interface User {
 }
 
 export interface UserProfile extends User {
-    reservations: Reservation[]
-    loans: Loan[]
+    reservations: Reservation[];
+    loans: Loan[];
 }
 
 export async function fetchUser() {

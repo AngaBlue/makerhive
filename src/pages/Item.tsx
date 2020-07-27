@@ -23,7 +23,7 @@ export default function Item() {
     });
     const user = useSelector((state: RootState) => state.user.data);
     const params = useParams<{ id: string; name: string }>();
-
+    //Fetch Item
     const fetchDetails = async (id: number) => {
         setState({ ...state, loading: true, error: null });
         let response = await fetchDetailedItem(id);
@@ -31,6 +31,7 @@ export default function Item() {
         if (response.payload) return setState({ ...state, loading: false, data: response.payload });
     };
 
+    //Fetch Item on Mount / URL Param Change
     useEffect(() => {
         let id: number | null = null;
         try {
@@ -42,6 +43,7 @@ export default function Item() {
     }, [params.id]);
 
     if (state.data) {
+        //Reservation Table Columns
         const reservationColumns: ColumnsType<Reservation> = [
             { title: "Position", dataIndex: "position", render: (_v, _r, i) => `#${i + 1}`, responsive: ["md"] },
             { title: "Quantity", dataIndex: "quantity" },
@@ -50,6 +52,7 @@ export default function Item() {
         ];
         if (user && user.rank.permissions >= 5)
             reservationColumns.push({ title: "User", dataIndex: "user", render: (v) => v.name });
+        //Loan Table Columns
         const loanColumns: ColumnsType<Loan> = [
             { title: "Quantity", dataIndex: "quantity" },
             { title: "Borrowed", dataIndex: "borrowed", render: (v) => moment(v).fromNow() },
@@ -78,9 +81,19 @@ export default function Item() {
                     </Col>
                 </Row>
                 <Typography.Title level={2}>Loans</Typography.Title>
-                <Table dataSource={state.data.loans} columns={loanColumns} pagination={false} className={styles.table}/>
+                <Table
+                    dataSource={state.data.loans}
+                    columns={loanColumns}
+                    pagination={false}
+                    className={styles.table}
+                />
                 <Typography.Title level={2}>Reservations</Typography.Title>
-                <Table dataSource={state.data.reservations} columns={reservationColumns} pagination={false} className={styles.table}/>
+                <Table
+                    dataSource={state.data.reservations}
+                    columns={reservationColumns}
+                    pagination={false}
+                    className={styles.table}
+                />
             </div>
         );
     }

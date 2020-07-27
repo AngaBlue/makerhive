@@ -13,6 +13,7 @@ import URLSafe from "../components/URLSafe";
 export default function Index() {
     const dispatch = useDispatch();
     const items = useSelector((state: RootState) => state.items);
+    //Fetch Items if Not Found / Cache Stale
     useEffect(() => {
         if (!items.loading) dispatch(getItems({ throttle: { requested: items.requested, timeout: 5 * 60 * 1000 } }));
     });
@@ -24,7 +25,7 @@ export default function Index() {
         if (filters.name) {
             filteredItems = filteredItems.filter((item) => item.name.toLowerCase().includes(filters.name));
         }
-        //Sort
+        //Sorting
         switch (filters.sorting) {
             case "name-az":
                 filteredItems.sort((a, b) => {

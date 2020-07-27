@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styles from "./EditItem.module.less";
-import { Typography, Form, Input, InputNumber, Checkbox, Button, notification } from "antd";
+import { Typography, Form, Input, InputNumber, Button, notification, Switch } from "antd";
 import ImageUpload, { UploadStateType } from "../../components/ImageUpload";
 import { Store } from "antd/lib/form/interface";
-import { request } from "../../store/api/api";
 import { APIError } from "../../store/api/Error";
-import { useDispatch } from "react-redux";
-import { Item, fetchItem } from "../../store/api/Item";
+import { Item, fetchItem, editItem } from "../../store/api/Item";
 import { useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import Error from "../Error";
 
 export default function EditItem() {
-    const dispatch = useDispatch();
     const [item, setItem] = useState<{ loading: boolean; error: APIError | null; data: Item | null }>({
         loading: false,
         error: null,
@@ -21,6 +18,7 @@ export default function EditItem() {
     const [state, setState] = useState<{ loading: boolean; error: APIError | null }>({ loading: false, error: null });
     const [image, setImage] = useState(null as UploadStateType);
     const [form] = Form.useForm();
+    //Fetch Item to Edit
     const fetchDetails = async (id: number) => {
         setItem({ ...item, loading: true, error: null });
         let response = await fetchItem(id);
@@ -28,15 +26,24 @@ export default function EditItem() {
         if (response.payload) return setItem({ ...item, loading: false, data: response.payload });
     };
     const submit = async (values: Store) => {
+        //Find Difference
+        let changedValues: Partial<Item> = {
+            id: item.data!.id
+        };
+        (Object.keys(values) as Array<keyof Item>).forEach((key) => {
+            if (values[key] !== item.data![key]) changedValues[key] = values[key];
+        });
+        //If no values changed
+        if (Object.keys(changedValues).length === 1 && !image)
+            return notification.info({
+                placement: "bottomRight",
+                message: "No values changed"
+            });
+        //Post Edit
         setState({ loading: true, error: null });
-        let response = await request(
-            {
-                type: "POST_EDIT_ITEM",
-                payload: values
-            },
-            image || undefined
-        );
+        let response = await editItem(changedValues, undefined || (image as Blob));
         if (response.error) {
+            //Handle Error Response
             setState({ loading: false, error: response.error });
             notification.error({
                 placement: "bottomRight",
@@ -45,22 +52,20 @@ export default function EditItem() {
                 duration: 8
             });
         } else {
-            let item = response.payload as Item;
+            //Edit Success
             setState({ loading: false, error: null });
             notification.success({
                 placement: "bottomRight",
-                message: "Item Added"
+                message: "Item Updated"
             });
+            //Update Form
+            setItem({ ...item, data: response.payload as Item });
             form.resetFields();
             setImage(null);
-            //Save to Redux
-            dispatch({
-                type: "items/editItem",
-                payload: item
-            });
         }
     };
     const params = useParams<{ id: string; name: string }>();
+    //Fetch Item on Component Mount / When URL params change
     useEffect(() => {
         let id: number | null = null;
         try {
@@ -74,12 +79,7 @@ export default function EditItem() {
         return (
             <div className={styles.main}>
                 <Typography.Title>Edit Item</Typography.Title>
-                <Form
-                    layout="vertical"
-                    className={styles.form}
-                    onFinish={submit}
-                    initialValues={item.data}
-                    form={form}>
+                <Form layout="vertical" className={styles.form} onFinish={submit} initialValues={item.data} form={form}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -93,7 +93,14 @@ export default function EditItem() {
                         <Input placeholder="Item location..." />
                     </Form.Item>
                     <Form.Item label="Image" name="image">
-                        <ImageUpload image={image} setImage={setImage} />
+                        <ImageUpload
+                            image={image}
+                            setImage={setImage}
+                            default={{
+                                name: item.data.name,
+                                url: `https://makerhive.anga.blue/static/images/item/${item.data.image}-thumb.jpg`
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Quantity"
@@ -101,12 +108,12 @@ export default function EditItem() {
                         rules={[{ required: true, message: "Please enter an item quantity." }]}>
                         <InputNumber min={1} max={999} precision={0} />
                     </Form.Item>
-                    <Form.Item name="hidden">
-                        <Checkbox>Hidden</Checkbox>
+                    <Form.Item name="hidden" label="Hidden">
+                        <Switch defaultChecked={!!item.data.hidden} />
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" disabled={state.loading} loading={state.loading}>
-                            Submit
+                            Save Changes
                         </Button>
                     </Form.Item>
                 </Form>

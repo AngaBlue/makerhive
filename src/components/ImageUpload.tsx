@@ -9,6 +9,10 @@ export type UploadStateType = File | null;
 export default function ImageUpload(props: {
     image: UploadStateType;
     setImage: React.Dispatch<React.SetStateAction<UploadStateType>>;
+    default?: {
+        name: string;
+        url: string;
+    };
 }) {
     const [fileList, setFileList] = useState([] as UploadFile<any>[]);
     const onRemove = () => {
@@ -33,8 +37,14 @@ export default function ImageUpload(props: {
             onChange={onChange}
             fileList={fileList}
             accept="image/jpeg, image/png;capture=camera">
-            {props.image ? (
-                <img src={(window.URL || window.webkitURL).createObjectURL(props.image)} alt={props.image.name} className={styles.image} />
+            {props.image || props.default ? (
+                <img
+                    src={
+                        props.image ? (window.URL || window.webkitURL).createObjectURL(props.image) : props.default?.url
+                    }
+                    alt={props.image ? props.image.name : props.default?.name}
+                    className={styles.image}
+                />
             ) : (
                 <>
                     <p className="ant-upload-drag-icon">

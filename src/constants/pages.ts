@@ -1,4 +1,4 @@
-import { DashboardOutlined, AppstoreOutlined, PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { DashboardOutlined, AppstoreOutlined, PlusOutlined } from "@ant-design/icons";
 import { Page } from "./Page";
 import React from "react";
 
@@ -36,11 +36,9 @@ const pages: Page[] = [
     new Page({
         name: "Edit Item",
         component: EditItem,
-        icon: EditOutlined,
         route: "/admin/edit-item/:id/:name",
         authenticated: true,
-        permissions: 5,
-        nav: true
+        permissions: 5
     }),
     new Page({
         name: "Item",

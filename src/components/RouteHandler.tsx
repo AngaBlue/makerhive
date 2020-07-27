@@ -13,7 +13,7 @@ const RouteHandler = (props: Page) => {
         (l, r) => {
             let old = l ? l.rank.id : null;
             let updated = r ? r.rank.id : null;
-            return (old === updated)
+            return old === updated;
         }
     );
     //Conditionally Render Component
@@ -30,7 +30,7 @@ const RouteHandler = (props: Page) => {
             );
         }
     }
-    return <Route path={props.route} exact={props.exact} component={props.component} key={props.route}/>;
+    return <Route path={props.route} exact={props.exact} component={props.component} key={props.route} />;
 };
 
 export default RouteHandler;

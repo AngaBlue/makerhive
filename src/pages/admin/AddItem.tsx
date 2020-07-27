@@ -1,28 +1,23 @@
 import React, { useState } from "react";
 import styles from "./AddItem.module.less";
-import { Typography, Form, Input, InputNumber, Checkbox, Button, notification } from "antd";
+import { Typography, Form, Input, InputNumber, Button, notification, Switch } from "antd";
 import ImageUpload, { UploadStateType } from "../../components/ImageUpload";
 import { Store } from "antd/lib/form/interface";
-import { request } from "../../store/api/api";
 import { APIError } from "../../store/api/Error";
 import { useDispatch } from "react-redux";
-import { Item } from "../../store/api/Item";
+import { Item, addItem } from "../../store/api/Item";
 
 export default function AddItem() {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const [state, setState] = useState<{ loading: boolean; error: APIError | null }>({ loading: false, error: null });
     const [image, setImage] = useState(null as UploadStateType);
     const [form] = Form.useForm();
     const submit = async (values: Store) => {
         setState({ loading: true, error: null });
-        let response = await request(
-            {
-                type: "POST_ADD_ITEM",
-                payload: values
-            },
-            image || undefined
-        );
+        //Post Item
+        let response = await addItem(values as Item, undefined || (image as Blob));
         if (response.error) {
+            //Handle Error
             setState({ loading: false, error: response.error });
             notification.error({
                 placement: "bottomRight",
@@ -31,19 +26,19 @@ export default function AddItem() {
                 duration: 8
             });
         } else {
-            let item = response.payload as Item
+            //Item Added Successfully
             setState({ loading: false, error: null });
             notification.success({
                 placement: "bottomRight",
                 message: "Item Added"
             });
-            form.resetFields()
-            setImage(null)
+            form.resetFields();
+            setImage(null);
             //Save to Redux
             dispatch({
                 type: "items/addItem",
-                payload: item
-            })
+                payload: response.payload
+            });
         }
     };
     return (
@@ -73,8 +68,8 @@ export default function AddItem() {
                     rules={[{ required: true, message: "Please enter an item quantity." }]}>
                     <InputNumber min={1} max={999} precision={0} />
                 </Form.Item>
-                <Form.Item name="hidden">
-                    <Checkbox>Hidden</Checkbox>
+                <Form.Item name="hidden" label="Hidden">
+                    <Switch defaultChecked={false} />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" disabled={state.loading} loading={state.loading}>

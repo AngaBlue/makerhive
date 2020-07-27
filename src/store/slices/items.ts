@@ -10,7 +10,7 @@ const reducers = {
         if (state.data) state.data.push(action.payload);
         else state.data = [action.payload];
     }
-}
+};
 
 const { slice, reducer } = AsyncSlice<ItemsState>({
     name: "items",

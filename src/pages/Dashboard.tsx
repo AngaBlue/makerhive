@@ -13,6 +13,7 @@ import CardContainer from "../components/cards/CardContainer";
 export default function Dashboard() {
     const dispatch = useDispatch();
     const { user, profile } = useSelector((state: RootState) => ({ user: state.user, profile: state.profile }));
+    //If User Profile Data not Cached, Fetch
     useEffect(() => {
         if (!user.loading) dispatch(getUser({ throttle: { requested: user.requested, timeout: 5 * 60 * 1000 } }));
         else {
@@ -51,7 +52,7 @@ export default function Dashboard() {
             <Typography.Title level={2}>Reservations</Typography.Title>
             <CardContainer>
                 {(profile.data ? profile.data.reservations : []).map((reservation) => (
-                    <ReservationCard {...reservation} key={reservation.id}/>
+                    <ReservationCard {...reservation} key={reservation.id} />
                 ))}
             </CardContainer>
         </div>

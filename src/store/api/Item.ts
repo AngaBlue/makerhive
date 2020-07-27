@@ -8,20 +8,12 @@ export interface Item {
     description: string;
     quantity: number;
     image: string;
-    hidden: number;
+    hidden: boolean;
     location: string;
     available: string;
 }
 
-export interface DetailedItem {
-    id: number;
-    name: string;
-    description: string;
-    quantity: number;
-    image: string;
-    hidden: number;
-    location: string;
-    available: string;
+export interface DetailedItem extends Item {
     reservations: Reservation[];
     loans: Loan[];
 }
@@ -44,4 +36,24 @@ export async function fetchItem(id: Item["id"]) {
         type: "GET_ITEM",
         payload: id
     })) as APIResponse<Item>;
+}
+
+export async function addItem(item: Item, image?: Blob) {
+    return (await request(
+        {
+            type: "POST_ITEM",
+            payload: item
+        },
+        image
+    )) as APIResponse<Item>;
+}
+
+export async function editItem(changes: Partial<Item>, image?: Blob) {
+    return (await request(
+        {
+            type: "PATCH_ITEM",
+            payload: changes
+        },
+        image
+    )) as APIResponse<Item>;
 }

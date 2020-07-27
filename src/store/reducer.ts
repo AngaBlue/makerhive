@@ -6,7 +6,6 @@ import items from "./slices/items";
 import profile from "./slices/profile";
 import loans from "./slices/loans";
 
-
 const rootReducer = combineReducers({
     user,
     users,
