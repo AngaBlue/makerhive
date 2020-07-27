@@ -8,7 +8,7 @@ const { slice, reducer } = AsyncSlice<UsersState>({ name: "users", initialState:
 
 export const { getDataStart, getDataFailure, getDataSuccess } = slice.actions;
 
-export const getUser = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
+export const getUsers = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
     if (options) {
         if (options.throttle && throttle(options.throttle.requested, options.throttle.timeout)) return;
     }

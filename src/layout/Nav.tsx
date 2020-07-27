@@ -56,17 +56,17 @@ export function Nav(props: { close?: (param: ClickParam) => void }) {
     return (
         <div className={styles.nav}>
             <Link to="/" style={{ display: "contents" }}>
-                <img src={banner} alt="Makerhive" className={styles.banner} />
+                <img src={banner} alt="Makerhive" className={styles.banner}/>
             </Link>
             {user.data ? (
-                <div className={styles.user}>
+                <Link to="/dashboard" className={styles.user}>
                     <Avatar
                         src={`https://makerhive.anga.blue/static/images/user/${user.data.image}.jpg`}
                         icon={<UserOutlined />}
                         size="large"
                     />
                     <Typography.Text className={styles.username}>{user.data.name}</Typography.Text>
-                </div>
+                </Link>
             ) : user.loading ? (
                 <div className={styles.userSkeleton}>
                     <Skeleton.Avatar active size="large" className={styles.avatar} />
@@ -75,7 +75,7 @@ export function Nav(props: { close?: (param: ClickParam) => void }) {
             ) : (
                 <div className={styles.login}>
                     <a href="/auth/google">
-                        <Button>L   ogin</Button>
+                        <Button>Login</Button>
                     </a>
                 </div>
             )}

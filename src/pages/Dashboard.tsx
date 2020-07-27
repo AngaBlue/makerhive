@@ -9,9 +9,11 @@ import { getProfile } from "../store/slices/profile";
 import { ReservationCard } from "../components/cards/ReservationCard";
 import { LoanCard } from "../components/cards/LoanCard";
 import CardContainer from "../components/cards/CardContainer";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
+    const breakpoints = useBreakpoint();
     const { user, profile } = useSelector((state: RootState) => ({ user: state.user, profile: state.profile }));
     //If User Profile Data not Cached, Fetch
     useEffect(() => {
@@ -35,13 +37,15 @@ export default function Dashboard() {
                     <Typography.Paragraph>{user.data.email}</Typography.Paragraph>
                     <Typography.Paragraph>{user.data.rank.name}</Typography.Paragraph>
                 </Col>
-                <Col>
-                    <Avatar
-                        src={`https://makerhive.anga.blue/static/images/user/${user.data.image}.jpg`}
-                        icon={<UserOutlined />}
-                        size={128}
-                    />
-                </Col>
+                {breakpoints.sm && (
+                    <Col>
+                        <Avatar
+                            src={`https://makerhive.anga.blue/static/images/user/${user.data.image}.jpg`}
+                            icon={<UserOutlined />}
+                            size={128}
+                        />
+                    </Col>
+                )}
             </Row>
             <Typography.Title level={2}>Loans</Typography.Title>
             <CardContainer className={styles.loans}>

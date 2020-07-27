@@ -26,7 +26,7 @@ export async function fetchItems() {
 
 export async function fetchDetailedItem(id: Item["id"]) {
     return (await request({
-        type: "GET_ITEM_DETAILED",
+        type: "GET_ITEM_DETAILS",
         payload: id
     })) as APIResponse<DetailedItem>;
 }
