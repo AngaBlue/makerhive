@@ -8,6 +8,7 @@ const Dashboard = React.lazy(() => import("../pages/Dashboard"));
 const Item = React.lazy(() => import("../pages/Item"));
 const EditItem = React.lazy(() => import("../pages/admin/EditItem"));
 const Users = React.lazy(() => import("../pages/admin/Users"));
+const Borrow = React.lazy(() => import("../pages/Borrow"));
 
 const pages: Page[] = [
     new Page({
@@ -54,6 +55,13 @@ const pages: Page[] = [
         permissions: 5,
         nav: true,
         icon: UserOutlined
+    }),
+    new Page({
+        name: "Borrow",
+        component: Borrow,
+        route: "/borrow/:id/:name",
+        authenticated: true,
+        permissions: 0,
     })
 ];
 export default pages;

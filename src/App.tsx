@@ -22,7 +22,6 @@ function App() {
             return old === updated;
         }
     );
-    console.log(user ? user.rank : null);
     return (
         <BrowserRouter>
             <Layout>

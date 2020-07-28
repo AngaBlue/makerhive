@@ -2,9 +2,9 @@ import React from "react";
 import styles from "./Loading.module.less";
 import { Spin } from "antd";
 
-export default function Loading() {
+export default function Loading(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
     return (
-        <div className={styles.loading}>
+        <div {...props} className={[styles.loading, props.className || ""].join(" ")}>
             <Spin size={"large"} style={{ height: "128px" }} />
         </div>
     );
