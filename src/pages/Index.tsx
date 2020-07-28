@@ -9,10 +9,11 @@ import Card from "../components/cards/Card";
 import { EyeOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../components/URLSafe";
+import Loading from "../components/Loading";
 
 export default function Index() {
     const dispatch = useDispatch();
-    const items = useSelector((state: RootState) => state.items);
+    const { items, user } = useSelector((state: RootState) => ({ items: state.items, user: state.user }));
     //Fetch Items if Not Found / Cache Stale
     useEffect(() => {
         if (!items.loading) dispatch(getItems({ throttle: { requested: items.requested, timeout: 5 * 60 * 1000 } }));
@@ -69,9 +70,9 @@ export default function Index() {
                     <Select.Option value="quantity-asc">Quantity (Asc)</Select.Option>
                 </Select>
             </div>
-            <CardContainer className={styles.items}>
-                {filteredItems &&
-                    filteredItems.map((item) => (
+            {items.data ? (
+                <CardContainer className={styles.items}>
+                    {filteredItems.map((item) => (
                         <Card
                             name={item.name}
                             image={item.image}
@@ -81,9 +82,11 @@ export default function Index() {
                                         Details
                                     </Button>
                                 </Link>,
-                                <Button type="ghost" icon={<LogoutOutlined />} className={styles.action}>
-                                    Borrow
-                                </Button>
+                                <Link to={`/borrow/${item.id}/${URLSafe(item.name)}`}>
+                                    <Button type="ghost" icon={<LogoutOutlined />} className={styles.action}>
+                                        Borrow
+                                    </Button>
+                                </Link>
                             ]}
                             details={
                                 <div className={styles.info}>
@@ -99,9 +102,13 @@ export default function Index() {
                                 </div>
                             }
                             key={item.id}
+                            editable={user.data && user.data.rank.permissions ? item.id : 0}
                         />
                     ))}
-            </CardContainer>
+                </CardContainer>
+            ) : (
+                items.loading && <Loading />
+            )}
         </div>
     );
 }
