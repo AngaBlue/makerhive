@@ -1,7 +1,10 @@
 import React from "react";
-import { Card as AntCard, Col } from "antd";
+import { Card as AntCard, Col, Button } from "antd";
 import styles from "./Card.module.less";
 import logo from "../../images/logo.svg";
+import { EditOutlined } from "@ant-design/icons";
+import URLSafe from "../URLSafe";
+import { Link } from "react-router-dom";
 
 export default function Card(props: {
     name: string;
@@ -9,6 +12,7 @@ export default function Card(props: {
     actions?: React.ReactNode[];
     details?: React.ReactNode;
     overlay?: string;
+    editable?: number;
     disabled?: boolean;
 }) {
     return (
@@ -26,7 +30,17 @@ export default function Card(props: {
                     />
                 }
                 actions={props.actions}>
-                <AntCard.Meta title={props.name}></AntCard.Meta>
+                <AntCard.Meta
+                    title={
+                        <div className={styles.title}>
+                            {props.name}
+                            {props.editable !== 0 && (
+                                <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}>
+                                    <Button type="ghost" icon={<EditOutlined />} className={styles.edit}/>
+                                </Link>
+                            )}
+                        </div>
+                    }></AntCard.Meta>
                 {props.details}
                 {props.overlay ? <div className={styles.overlay} style={{ backgroundColor: props.overlay }} /> : null}
                 {props.disabled ? <div className={styles.disabled} /> : null}

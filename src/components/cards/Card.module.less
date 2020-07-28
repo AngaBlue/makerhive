@@ -46,8 +46,9 @@
     object-fit: cover;
     overflow: hidden;
     height: 0;
-    padding-top: calc(200% / 3); //3:2 Aspect Ratio
+    padding-top: calc(300% / 4); //4:3 Aspect Ratio
     background-size: cover;
+    border-radius: 8px 8px 0 0
 }
 
 .disabled {
@@ -57,4 +58,15 @@
     pointer-events: visible;
     user-select: none;
     animation: fadein ease-out 0.2s;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .edit {
+        border: none;
+        height: 1em;
+    }
 }
