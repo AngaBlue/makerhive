@@ -1,25 +1,14 @@
 import React from "react";
 import { Page } from "../constants/Page";
-import { RootState } from "..";
-import { useSelector } from "react-redux";
-
 import Error from "../pages/Error";
 import { Route } from "react-router-dom";
+import { Rank } from "../store/api/Rank";
 
-const RouteHandler = (props: Page) => {
-    //Get User
-    const user = useSelector(
-        (state: RootState) => state.user.data,
-        (l, r) => {
-            let old = l ? l.rank.id : null;
-            let updated = r ? r.rank.id : null;
-            return old === updated;
-        }
-    );
+const RouteHandler = (props: Page, rank: Rank | null) => {
     //Conditionally Render Component
     if (props.authenticated) {
-        if (user) {
-            if (props.permissions !== undefined && user.rank.permissions < props.permissions) {
+        if (rank) {
+            if (props.permissions !== undefined && rank.permissions < props.permissions) {
                 props.component = () => (
                     <Error name="Unauthorised" message="You aren't authorised to view this page." />
                 );

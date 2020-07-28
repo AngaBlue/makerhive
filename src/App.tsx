@@ -6,14 +6,29 @@ import RouteHandler from "./components/RouteHandler";
 import Error from "./pages/Error";
 import Loading from "./components/Loading";
 import "./App.module.less";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/reducer";
 
 function App() {
+    const user = useSelector(
+        (state: RootState) => state.user.data,
+        (l, r) => {
+            let old = l ? l.rank.id : null;
+            let updated = r ? r.rank.id : null;
+            if (old !== updated) {
+                console.log("reloading");
+                window.location.reload();
+            }
+            return old === updated;
+        }
+    );
+    console.log(user ? user.rank : null);
     return (
         <BrowserRouter>
             <Layout>
                 <Suspense fallback={<Loading />}>
                     <Switch>
-                        {pages.map((p) => RouteHandler(p))}
+                        {pages.map((p) => RouteHandler(p, user ? user.rank : null))}
                         <Route component={() => <Error name="Not Found" message="Page not found" />} />
                     </Switch>
                 </Suspense>
