@@ -77,7 +77,8 @@ export default function AddItem() {
         if (id) fetchDetails(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id]);
-    if (item.data)
+    if (item.data) {
+        let available = parseInt(item.data.available)
         return (
             <div className={styles.main}>
                 <Row gutter={[16, 16]}>
@@ -89,7 +90,7 @@ export default function AddItem() {
                             alt={item.data.name}></Img>
                     </Col>
                     <Col xs={24} lg={16}>
-                        <Typography.Title>Borrow {item.data.name}</Typography.Title>
+                        <Typography.Title>{item.data.name}</Typography.Title>
                         <Typography.Paragraph>
                             {item.data.description || "No item description provided."}
                         </Typography.Paragraph>
@@ -108,7 +109,7 @@ export default function AddItem() {
                                 label="Quantity"
                                 name="quantity"
                                 rules={[{ required: true, message: "Please enter an item quantity." }]}>
-                                <InputNumber min={1} max={999} precision={0} />
+                                <InputNumber min={1} max={available} precision={0} />
                             </Form.Item>
                             <Form.Item label="Note" name="note">
                                 <Input.TextArea
@@ -121,16 +122,18 @@ export default function AddItem() {
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    disabled={state.loading}
+                                    disabled={state.loading || available === 0}
                                     loading={state.loading}>
                                     Borrow
                                 </Button>
                             </Form.Item>
+                            {available === 0 && <Typography.Paragraph type="danger">Sorry, this item is currently unavailable. Please try reserving this item instead.</Typography.Paragraph>}
                         </Form>
                     </Col>
                 </Row>
             </div>
         );
+    }
     if (item.loading) return <Loading />;
     if (item.error) return <Error {...item.error} />;
     return <Error name="Not Found" message="This item was not found." />;
