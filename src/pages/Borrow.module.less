@@ -1,0 +1,33 @@
+@import "../variables.less";
+
+.main {
+    padding: 1rem;
+}
+
+.form {
+    max-width: 720px;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+
+    .image {
+        max-width: 100%;
+        object-fit: contain;
+        background-position: top right;
+        width: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    @media screen and (min-width: @screen-lg) {
+        order: 1;
+        justify-content: flex-end;
+
+        .image {
+            width: auto;
+            max-height: 360px;
+        }
+    }
+}

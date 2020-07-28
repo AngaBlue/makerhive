@@ -1,0 +1,32 @@
+@import "../../variables.less";
+
+.main {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.iconButton {
+    border: 0;
+}
+
+.link {
+    color: rgba(0,0,0,0.65);
+    font-weight: bolder;
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    > * {
+        flex: 0 1 160px;
+    }
+
+    .search {
+        flex-basis: 200px;
+        margin-right: 16px;
+    }
+}

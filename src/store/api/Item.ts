@@ -41,7 +41,7 @@ export async function fetchItem(id: Item["id"]) {
 export async function addItem(item: Item, image?: Blob) {
     return (await request(
         {
-            type: "POST_ITEM",
+            type: "POST_ADD_ITEM",
             payload: item
         },
         image

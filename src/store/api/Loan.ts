@@ -15,3 +15,17 @@ export async function fetchAllLoans() {
         type: "GET_ALL_LOANS"
     })) as APIResponse<Loan[]>;
 }
+
+export async function loanItem(loan: {
+    item: number,
+    quantity: number,
+    note?: string
+}, image?: Blob) {
+    return (await request(
+        {
+            type: "POST_LOAN_ITEM",
+            payload: loan
+        },
+        image
+    )) as APIResponse<Loan>;
+}

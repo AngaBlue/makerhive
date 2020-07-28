@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Upload } from "antd";
+import { Upload, Typography } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
 import styles from "./ImageUpload.module.less";
@@ -36,8 +36,10 @@ export default function ImageUpload(props: {
             beforeUpload={beforeUpload}
             onChange={onChange}
             fileList={fileList}
-            accept="image/jpeg, image/png;capture=camera">
+            accept="image/jpeg, image/png;capture=camera"
+            className={styles.upload}>
             {props.image || props.default ? (
+                <>
                 <img
                     src={
                         props.image ? (window.URL || window.webkitURL).createObjectURL(props.image) : props.default?.url
@@ -45,6 +47,8 @@ export default function ImageUpload(props: {
                     alt={props.image ? props.image.name : props.default?.name}
                     className={styles.image}
                 />
+                <Typography.Paragraph style={{margin: 0}}>Click to replace image.  All images will be cropped to the 4:3 aspect ratio.</Typography.Paragraph>
+                </>
             ) : (
                 <>
                     <p className="ant-upload-drag-icon">
