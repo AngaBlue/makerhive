@@ -3,6 +3,7 @@ import AsyncSlice, { getAsyncOptions, throttle } from "../AsyncSlice";
 import { fetchUserProfile, UserProfile, User } from "../api/User";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Reservation } from "../api/Reservation";
+import { Loan } from "../api/Loan";
 
 type ProfileState = UserProfile | null;
 
@@ -16,6 +17,10 @@ const { slice, reducer } = AsyncSlice<ProfileState>({
                 state.data.reservations.findIndex((r) => r.id === action.payload),
                 1
             );
+        },
+        addLoan: (state, action: PayloadAction<Loan>) => {
+            if (!state.data) return state;
+            return { ...state, data: { ...state.data, loans: [action.payload, ...state.data.loans] } };
         }
     }
 });
