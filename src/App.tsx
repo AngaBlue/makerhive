@@ -15,8 +15,9 @@ function App() {
         (l, r) => {
             let old = l ? l.rank.id : null;
             let updated = r ? r.rank.id : null;
+            //!!!Try Avoid Force Reloading and Instead Figure out Why React Components aren't Updating
             if (old !== updated) {
-                console.log("reloading");
+                console.log("reloading...");
                 window.location.reload();
             }
             return old === updated;
