@@ -1,10 +1,11 @@
 import React from "react";
-import { Card as AntCard, Col, Button } from "antd";
+import { Card as AntCard, Col } from "antd";
 import styles from "./Card.module.less";
 import logo from "../../images/logo.svg";
 import { EditOutlined } from "@ant-design/icons";
 import URLSafe from "../URLSafe";
 import { Link } from "react-router-dom";
+import GhostButton from "../GhostButton";
 
 export default function Card(props: {
     name: string;
@@ -36,7 +37,7 @@ export default function Card(props: {
                             {props.name}
                             {!!props.editable && (
                                 <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}>
-                                    <Button type="ghost" icon={<EditOutlined />} className={styles.edit}/>
+                                    <GhostButton icon={<EditOutlined />} className={styles.edit}/>
                                 </Link>
                             )}
                         </div>

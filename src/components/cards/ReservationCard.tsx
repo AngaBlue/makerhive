@@ -8,6 +8,7 @@ import { EyeOutlined, DeleteOutlined, LoadingOutlined } from "@ant-design/icons"
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import URLSafe from "../URLSafe";
+import GhostButton from "../GhostButton";
 
 export function ReservationCard(props: Reservation) {
     const dispatch = useDispatch();
@@ -37,20 +38,19 @@ export function ReservationCard(props: Reservation) {
                 image={props.item.image}
                 disabled={state.loading}
                 actions={[
-                    <Button type="ghost" icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>
+                    <GhostButton icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>
                         Details
-                    </Button>,
+                    </GhostButton>,
                     <Popconfirm
                         title="Are you sure want to delete this reservation?"
                         onConfirm={deleteConfirm}
                         okText="Yes"
                         cancelText="No">
-                        <Button
-                            type="ghost"
+                        <GhostButton
                             icon={state.loading ? <LoadingOutlined /> : <DeleteOutlined />}
                             className={styles.action}>
                             Delete
-                        </Button>
+                        </GhostButton>
                     </Popconfirm>
                 ]}
                 details={

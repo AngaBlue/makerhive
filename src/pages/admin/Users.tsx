@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Users.module.less";
-import { Typography, Table, Avatar, Button, Input } from "antd";
+import { Typography, Table, Avatar, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/reducer";
 import { getUsers } from "../../store/slices/users";
@@ -9,6 +9,7 @@ import moment from "moment";
 import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../../components/URLSafe";
+import GhostButton from "../../components/GhostButton";
 
 export default function Users() {
     const dispatch = useDispatch();
@@ -76,10 +77,10 @@ export default function Users() {
                             render: (text, user) => (
                                 <>
                                     <Link to={`/admin/edit-user/${user.id}/${URLSafe(user.name)}`}>
-                                        <Button type="ghost" className={styles.iconButton} icon={<EditOutlined />} />
+                                        <GhostButton className={styles.iconButton} icon={<EditOutlined />} />
                                     </Link>
                                     <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`}>
-                                        <Button type="ghost" className={styles.iconButton} icon={<UserOutlined />} />
+                                        <GhostButton className={styles.iconButton} icon={<UserOutlined />} />
                                     </Link>
                                 </>
                             )

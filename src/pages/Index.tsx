@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Select, Button, Typography } from "antd";
+import { Input, Select, Typography } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/reducer";
 import styles from "./Index.module.less";
@@ -10,6 +10,7 @@ import { EyeOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../components/URLSafe";
 import Loading from "../components/Loading";
+import GhostButton from "../components/GhostButton";
 
 export default function Index() {
     const dispatch = useDispatch();
@@ -78,14 +79,14 @@ export default function Index() {
                             image={item.image}
                             actions={[
                                 <Link to={`/items/${item.id}/${URLSafe(item.name)}`}>
-                                    <Button type="ghost" icon={<EyeOutlined />} className={styles.action}>
+                                    <GhostButton icon={<EyeOutlined />} className={styles.action}>
                                         Details
-                                    </Button>
+                                    </GhostButton>
                                 </Link>,
                                 <Link to={`/borrow/${item.id}/${URLSafe(item.name)}`}>
-                                    <Button type="ghost" icon={<LogoutOutlined />} className={styles.action}>
+                                    <GhostButton icon={<LogoutOutlined />} className={styles.action}>
                                         Borrow
-                                    </Button>
+                                    </GhostButton>
                                 </Link>
                             ]}
                             details={

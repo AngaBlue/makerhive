@@ -8,6 +8,7 @@ import styles from "./LoanCard.module.less";
 import { Link } from "react-router-dom";
 import URLSafe from "../URLSafe";
 import { useDispatch } from "react-redux";
+import GhostButton from "../GhostButton";
 
 enum LoanStatus {
     ACTIVE = "Active",
@@ -45,20 +46,19 @@ export function LoanCard(props: Loan) {
                 name={props.item.name}
                 image={props.item.image}
                 actions={[
-                    <Button type="ghost" icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>
+                    <GhostButton icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>
                         Details
-                    </Button>,
+                    </GhostButton>,
                     <Popconfirm
                         title="Are you sure want to mark this loan as returned?"
                         onConfirm={returnConfirm}
                         okText="Yes"
                         cancelText="No">
-                        <Button
-                            type="ghost"
+                        <GhostButton
                             icon={state.loading ? <LoadingOutlined /> : <LogoutOutlined />}
                             className={styles.action}>
                             Return
-                        </Button>
+                        </GhostButton>
                     </Popconfirm>
                 ]}
                 details={
