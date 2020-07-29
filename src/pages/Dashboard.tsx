@@ -3,13 +3,15 @@ import styles from "./Dashboard.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "..";
 import { getUser } from "../store/slices/user";
-import { Typography, Row, Col, Avatar } from "antd";
+import { Typography, Row, Col, Avatar, Result, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { getProfile } from "../store/slices/profile";
 import { ReservationCard } from "../components/cards/ReservationCard";
 import { LoanCard } from "../components/cards/LoanCard";
 import CardContainer from "../components/cards/CardContainer";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
@@ -18,14 +20,13 @@ export default function Dashboard() {
     //If User Profile Data not Cached, Fetch
     useEffect(() => {
         if (!user.loading) dispatch(getUser({ throttle: { requested: user.requested, timeout: 5 * 60 * 1000 } }));
-        else {
-            if (user.data && !profile.loading)
-                dispatch(
-                    getProfile({
-                        payload: user.data.id,
-                        throttle: { requested: profile.requested, timeout: 60 * 1000 }
-                    })
-                );
+        if (user.data && !profile.loading) {
+            dispatch(
+                getProfile({
+                    payload: user.data.id,
+                    throttle: { requested: profile.requested, timeout: 30 * 1000 }
+                })
+            );
         }
     });
     if (!user.data) return null;
@@ -48,17 +49,47 @@ export default function Dashboard() {
                 )}
             </Row>
             <Typography.Title level={2}>Loans</Typography.Title>
-            <CardContainer className={styles.loans}>
-                {(profile.data ? profile.data.loans : []).map((loan) => (
-                    <LoanCard {...loan} key={loan.id} />
-                ))}
-            </CardContainer>
+            {profile.data ? (
+                profile.data.loans.length > 0 ? (
+                    <CardContainer className={styles.loans}>
+                        {profile.data.loans.map((loan) => (
+                            <LoanCard {...loan} key={loan.id} />
+                        ))}
+                    </CardContainer>
+                ) : (
+                    <Result
+                        title="No loans yet"
+                        extra={
+                            <Link to="/">
+                                <Button>Browse Items</Button>
+                            </Link>
+                        }
+                    />
+                )
+            ) : (
+                <Loading className={styles.loading} />
+            )}
             <Typography.Title level={2}>Reservations</Typography.Title>
-            <CardContainer>
-                {(profile.data ? profile.data.reservations : []).map((reservation) => (
-                    <ReservationCard {...reservation} key={reservation.id} />
-                ))}
-            </CardContainer>
+            {profile.data ? (
+                profile.data.reservations.length > 0 ? (
+                    profile.data.reservations.map((reservation) => (
+                        <CardContainer className={styles.reservations}>
+                            <ReservationCard {...reservation} key={reservation.id} />
+                        </CardContainer>
+                    ))
+                ) : (
+                    <Result
+                        title="No reservations yet"
+                        extra={
+                            <Link to="/">
+                                <Button>Browse Items</Button>
+                            </Link>
+                        }
+                    />
+                )
+            ) : (
+                <Loading className={styles.loading} />
+            )}
         </div>
     );
 }
