@@ -18,14 +18,14 @@ export default function Dashboard() {
     //If User Profile Data not Cached, Fetch
     useEffect(() => {
         if (!user.loading) dispatch(getUser({ throttle: { requested: user.requested, timeout: 5 * 60 * 1000 } }));
-        else {
-            if (user.data && !profile.loading)
-                dispatch(
-                    getProfile({
-                        payload: user.data.id,
-                        throttle: { requested: profile.requested, timeout: 60 * 1000 }
-                    })
-                );
+        if (user.data && !profile.loading) {
+            console.log("Attempting to Fetch Profile");
+            dispatch(
+                getProfile({
+                    payload: user.data.id,
+                    throttle: { requested: profile.requested, timeout: 30 * 1000 }
+                })
+            );
         }
     });
     if (!user.data) return null;
