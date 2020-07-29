@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Menu, Drawer, Avatar, Button, Typography, Skeleton } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import styles from "./Nav.module.less";
-import { ClickParam } from "antd/lib/menu";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { getUser } from "../store/slices/user";
@@ -39,7 +38,7 @@ export function MobileNav() {
     );
 }
 
-export function Nav(props: { close?: (param: ClickParam) => void }) {
+export function Nav(props: { close?: () => void }) {
     const location = useLocation();
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
@@ -55,11 +54,11 @@ export function Nav(props: { close?: (param: ClickParam) => void }) {
     });
     return (
         <div className={styles.nav}>
-            <Link to="/" style={{ display: "contents" }}>
+            <Link to="/" style={{ display: "contents" }} onClick={props.close}>
                 <img src={banner} alt="Makerhive" className={styles.banner}/>
             </Link>
             {user.data ? (
-                <Link to="/dashboard" className={styles.user}>
+                <Link to="/dashboard" className={styles.user} onClick={props.close}>
                     <Avatar
                         src={`https://makerhive.anga.blue/static/images/user/${user.data.image}.jpg`}
                         icon={<UserOutlined />}

@@ -30,15 +30,15 @@ export default function Index() {
         switch (filters.sorting) {
             case "name-az":
                 filteredItems.sort((a, b) => {
-                    if (a.name < b.name) return -1;
-                    if (a.name > b.name) return 1;
+                    if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
                     return 0;
                 });
                 break;
             case "name-za":
                 filteredItems.sort((a, b) => {
-                    if (a.name > b.name) return -1;
-                    if (a.name < b.name) return 1;
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+                    if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
                     return 0;
                 });
                 break;

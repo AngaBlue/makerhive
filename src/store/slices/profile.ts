@@ -42,7 +42,6 @@ export const getProfile = (options: getAsyncOptions & { payload: User["id"] }): 
     if (options) {
         if (options.throttle && throttle(options.throttle.requested, options.throttle.timeout)) return;
     }
-    console.log("Fetching Profile")
     dispatch(getDataStart());
     const res = await fetchUserProfile(options.payload);
     if (res.error) dispatch(getDataFailure(res.error));

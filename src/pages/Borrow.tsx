@@ -5,17 +5,18 @@ import { Store } from "antd/lib/form/interface";
 import { APIError } from "../store/api/Error";
 import { Item } from "../store/api/Item";
 import { fetchItem } from "../store/api/Item";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { loanItem } from "../store/api/Loan";
 import Loading from "../components/Loading";
 import Error from "./Error";
 import Img from "react-cool-img";
 import logo from "../images/logo.svg";
 import { useDispatch } from "react-redux";
+import URLSafe from "../components/URLSafe";
 
 export default function Borrow() {
-    const dispatch = useDispatch()
-    const history = useHistory()
+    const dispatch = useDispatch();
+    const history = useHistory();
     //Fetch Item to Edit
     const [item, setItem] = useState<{ loading: boolean; error: APIError | null; data: Item | null }>({
         loading: false,
@@ -31,13 +32,13 @@ export default function Borrow() {
     const [state, setState] = useState<{ loading: boolean; error: APIError | null }>({ loading: false, error: null });
     const [form] = Form.useForm();
     const submit = async (values: Store) => {
-        if (!item.data) return
+        if (!item.data) return;
         setState({ loading: true, error: null });
         let loan = {
             item: item.data.id,
             quantity: values.quantity,
             note: values.note || ""
-        }
+        };
         //Post Loan
         let response = await loanItem(loan);
         if (response.error) {
@@ -63,7 +64,7 @@ export default function Borrow() {
                 payload: response.payload
             });
             //Redirect Back
-            history.goBack()
+            history.goBack();
         }
     };
     const params = useParams<{ id: string; name: string }>();
@@ -78,7 +79,7 @@ export default function Borrow() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id]);
     if (item.data) {
-        let available = parseInt(item.data.available)
+        let available = parseInt(item.data.available);
         return (
             <div className={styles.main}>
                 <Row gutter={[16, 16]}>
@@ -112,11 +113,10 @@ export default function Borrow() {
                                 <InputNumber min={1} max={available} precision={0} />
                             </Form.Item>
                             <Form.Item label="Note" name="note">
-                                <Input.TextArea
-                                    placeholder="Loan note..."
-                                    autoSize={{ minRows: 3, maxRows: 5 }}
-                                />
-                                <Typography.Paragraph>If the item is numbered or labelled, please include the label in the notes.</Typography.Paragraph>
+                                <Input.TextArea placeholder="Loan note..." autoSize={{ minRows: 3, maxRows: 5 }} />
+                                <Typography.Paragraph>
+                                    If the item is numbered or labelled, please include the label in the notes.
+                                </Typography.Paragraph>
                             </Form.Item>
                             <Form.Item>
                                 <Button
@@ -127,7 +127,13 @@ export default function Borrow() {
                                     Borrow
                                 </Button>
                             </Form.Item>
-                            {available === 0 && <Typography.Paragraph type="danger">Sorry, this item is currently unavailable. Please try reserving this item instead.</Typography.Paragraph>}
+                            {available === 0 && (
+                                <Typography.Paragraph type="danger">
+                                    Sorry, this item is currently unavailable. Please try{" "}
+                                    <Link to={`/reserve/${item.data.id}/${URLSafe(item.data.name)}`}>reserving</Link>{" "}
+                                    this item instead.
+                                </Typography.Paragraph>
+                            )}
                         </Form>
                     </Col>
                 </Row>
