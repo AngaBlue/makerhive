@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Reservation, deleteReservation } from "../../store/api/Reservation";
-import { Button, Typography, Popconfirm, Modal } from "antd";
+import { Button, Typography, Popconfirm, Modal, notification } from "antd";
 import Card from "./Card";
 import moment from "moment";
 import styles from "./ReservationCard.module.less";
@@ -22,11 +22,13 @@ export function ReservationCard(props: Reservation) {
         setState({ loading: true });
         const response = await deleteReservation(props.id);
         setState({ loading: false });
-        if (!response.error)
+        if (!response.error) {
+            notification.success({ placement: "bottomRight", message: "Reservation Deleted" });
             dispatch({
                 type: "profile/removeReservation",
                 payload: props.id
             });
+        }
     };
     return (
         <>

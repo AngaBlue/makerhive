@@ -18,9 +18,20 @@ const { slice, reducer } = AsyncSlice<ProfileState>({
                 1
             );
         },
+        removeLoan: (state, action: PayloadAction<Reservation["id"]>) => {
+            if (!state.data) return state;
+            state.data.loans.splice(
+                state.data.loans.findIndex((l) => l.id === action.payload),
+                1
+            );
+        },
         addLoan: (state, action: PayloadAction<Loan>) => {
             if (!state.data) return state;
             return { ...state, data: { ...state.data, loans: [action.payload, ...state.data.loans] } };
+        },
+        addReservation: (state, action: PayloadAction<Reservation>) => {
+            if (!state.data) return state;
+            return { ...state, data: { ...state.data, reservations: [action.payload, ...state.data.reservations] } };
         }
     }
 });

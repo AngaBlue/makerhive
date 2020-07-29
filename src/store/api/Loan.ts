@@ -29,3 +29,12 @@ export async function loanItem(loan: {
         image
     )) as APIResponse<Loan>;
 }
+
+export async function returnLoan(id: number) {
+    return (await request(
+        {
+            type: "PATCH_RETURN_LOAN",
+            payload: id
+        }
+    )) as APIResponse<Loan>;
+}

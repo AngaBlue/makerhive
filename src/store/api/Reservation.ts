@@ -16,3 +16,17 @@ export async function deleteReservation(id: Reservation["id"]) {
         payload: id
     })) as APIResponse<undefined>;
 }
+
+export async function reserveItem(reservation: {
+    item: number,
+    quantity: number,
+    note?: string
+}, image?: Blob) {
+    return (await request(
+        {
+            type: "POST_RESERVE_ITEM",
+            payload: reservation
+        },
+        image
+    )) as APIResponse<Reservation>;
+}

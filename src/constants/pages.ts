@@ -9,6 +9,7 @@ const Item = React.lazy(() => import("../pages/Item"));
 const EditItem = React.lazy(() => import("../pages/admin/EditItem"));
 const Users = React.lazy(() => import("../pages/admin/Users"));
 const Borrow = React.lazy(() => import("../pages/Borrow"));
+const Reserve = React.lazy(() => import("../pages/Reserve"));
 
 const pages: Page[] = [
     new Page({
@@ -60,6 +61,13 @@ const pages: Page[] = [
         name: "Borrow",
         component: Borrow,
         route: "/borrow/:id/:name",
+        authenticated: true,
+        permissions: 0,
+    }),
+    new Page({
+        name: "Reserve",
+        component: Reserve,
+        route: "/reserve/:id/:name",
         authenticated: true,
         permissions: 0,
     })

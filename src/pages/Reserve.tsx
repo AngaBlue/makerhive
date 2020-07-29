@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Borrow.module.less";
+import styles from "./Reserve.module.less";
 import { Typography, Form, Input, InputNumber, Button, notification, Row, Col, Divider } from "antd";
 import { Store } from "antd/lib/form/interface";
 import { APIError } from "../store/api/Error";
 import { Item } from "../store/api/Item";
 import { fetchItem } from "../store/api/Item";
 import { useParams, useHistory } from "react-router-dom";
-import { loanItem } from "../store/api/Loan";
 import Loading from "../components/Loading";
 import Error from "./Error";
 import Img from "react-cool-img";
 import logo from "../images/logo.svg";
 import { useDispatch } from "react-redux";
+import { reserveItem } from "../store/api/Reservation";
 
-export default function Borrow() {
+export default function Reserve() {
     const dispatch = useDispatch()
     const history = useHistory()
     //Fetch Item to Edit
@@ -33,13 +33,13 @@ export default function Borrow() {
     const submit = async (values: Store) => {
         if (!item.data) return
         setState({ loading: true, error: null });
-        let loan = {
+        let reservation = {
             item: item.data.id,
             quantity: values.quantity,
             note: values.note || ""
         }
-        //Post Loan
-        let response = await loanItem(loan);
+        //Post Reservation
+        let response = await reserveItem(reservation);
         if (response.error) {
             //Handle Error
             setState({ loading: false, error: response.error });
@@ -54,12 +54,12 @@ export default function Borrow() {
             setState({ loading: false, error: null });
             notification.success({
                 placement: "bottomRight",
-                message: "Item Loaned"
+                message: "Item Reserved"
             });
             form.resetFields();
             //Save to Redux
             dispatch({
-                type: "profile/addLoan",
+                type: "profile/addReservation",
                 payload: response.payload
             });
             //Redirect Back
@@ -78,7 +78,6 @@ export default function Borrow() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id]);
     if (item.data) {
-        let available = parseInt(item.data.available)
         return (
             <div className={styles.main}>
                 <Row gutter={[16, 16]}>
@@ -98,7 +97,7 @@ export default function Borrow() {
                         <Typography.Text strong>Quantity:</Typography.Text> {item.data.quantity} <br />
                         <Typography.Text strong>Available:</Typography.Text> {item.data.available}
                         <Divider />
-                        <Typography.Title level={2}>Loan Item</Typography.Title>
+                        <Typography.Title level={2}>Reserve Item</Typography.Title>
                         <Form
                             layout="vertical"
                             className={styles.form}
@@ -109,25 +108,23 @@ export default function Borrow() {
                                 label="Quantity"
                                 name="quantity"
                                 rules={[{ required: true, message: "Please enter an item quantity." }]}>
-                                <InputNumber min={1} max={available} precision={0} />
+                                <InputNumber min={1} max={item.data.quantity} precision={0} />
                             </Form.Item>
-                            <Form.Item label="Note" name="note">
+                            <Form.Item label="Reservation" name="note">
                                 <Input.TextArea
-                                    placeholder="Loan note..."
+                                    placeholder="Reservation note..."
                                     autoSize={{ minRows: 3, maxRows: 5 }}
                                 />
-                                <Typography.Paragraph>If the item is numbered or labelled, please include the label in the notes.</Typography.Paragraph>
                             </Form.Item>
                             <Form.Item>
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    disabled={state.loading || available === 0}
+                                    disabled={state.loading}
                                     loading={state.loading}>
-                                    Borrow
+                                    Reserve
                                 </Button>
                             </Form.Item>
-                            {available === 0 && <Typography.Paragraph type="danger">Sorry, this item is currently unavailable. Please try reserving this item instead.</Typography.Paragraph>}
                         </Form>
                     </Col>
                 </Row>

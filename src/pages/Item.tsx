@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Item.module.less";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Error from "./Error";
 import { APIError } from "../store/api/Error";
 import { DetailedItem, fetchDetailedItem } from "../store/api/Item";
-import { Row, Col, Typography, Table } from "antd";
+import { Row, Col, Typography, Table, Button, Space } from "antd";
 import Loading from "../components/Loading";
 import { RootState } from "../";
 import { useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import { Reservation } from "../store/api/Reservation";
 import { Loan } from "../store/api/Loan";
 import logo from "../images/logo.svg";
 import Img from "react-cool-img";
+import URLSafe from "../components/URLSafe";
 
 export default function Item() {
     const [state, setState] = useState<{ loading: boolean; error: APIError | null; data: DetailedItem | null }>({
@@ -77,7 +78,15 @@ export default function Item() {
                         </Typography.Paragraph>
                         <Typography.Text strong>Location:</Typography.Text> {state.data.location || "Unknown"} <br />
                         <Typography.Text strong>Quantity:</Typography.Text> {state.data.quantity} <br />
-                        <Typography.Text strong>Available:</Typography.Text> {state.data.available}
+                        <Typography.Text strong>Available:</Typography.Text> {state.data.available} <br /><br />
+                        <Space>
+                            <Link to={`/borrow/${state.data.id}/${URLSafe(state.data.name)}`}>
+                                <Button type="primary">Borrow</Button>
+                            </Link>
+                            <Link to={`/reserve/${state.data.id}/${URLSafe(state.data.name)}`}>
+                                <Button>Reserve</Button>
+                            </Link>
+                        </Space>
                     </Col>
                 </Row>
                 <Typography.Title level={2}>Loans</Typography.Title>

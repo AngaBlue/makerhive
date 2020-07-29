@@ -1,12 +1,13 @@
-import { Loan } from "../../store/api/Loan";
+import { Loan, returnLoan } from "../../store/api/Loan";
 import React, { useState } from "react";
 import moment from "moment";
-import { Button, Typography, Modal } from "antd";
+import { Button, Typography, Modal, Popconfirm, notification } from "antd";
 import Card from "./Card";
-import { EyeOutlined, LogoutOutlined } from "@ant-design/icons";
+import { EyeOutlined, LogoutOutlined, LoadingOutlined } from "@ant-design/icons";
 import styles from "./LoanCard.module.less";
 import { Link } from "react-router-dom";
 import URLSafe from "../URLSafe";
+import { useDispatch } from "react-redux";
 
 enum LoanStatus {
     ACTIVE = "Active",
@@ -15,9 +16,25 @@ enum LoanStatus {
 }
 
 export function LoanCard(props: Loan) {
+    const dispatch = useDispatch();
     const [details, setDetails] = useState(false);
+    const [state, setState] = useState({
+        loading: false
+    });
     const toggleDetails = () => {
         setDetails(!details);
+    };
+    const returnConfirm = async () => {
+        setState({ loading: true });
+        const response = await returnLoan(props.id);
+        setState({ loading: false });
+        if (!response.error) {
+            notification.success({ placement: "bottomRight", message: "Loan Returned" });
+            dispatch({
+                type: "profile/removeLoan",
+                payload: props.id
+            });
+        }
     };
     let status = LoanStatus.ACTIVE;
     if (props.returned) status = LoanStatus.RETURNED;
@@ -31,9 +48,18 @@ export function LoanCard(props: Loan) {
                     <Button type="ghost" icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>
                         Details
                     </Button>,
-                    <Button type="ghost" icon={<LogoutOutlined />} className={styles.action}>
-                        Return
-                    </Button>
+                    <Popconfirm
+                        title="Are you sure want to mark this loan as returned?"
+                        onConfirm={returnConfirm}
+                        okText="Yes"
+                        cancelText="No">
+                        <Button
+                            type="ghost"
+                            icon={state.loading ? <LoadingOutlined /> : <LogoutOutlined />}
+                            className={styles.action}>
+                            Return
+                        </Button>
+                    </Popconfirm>
                 ]}
                 details={
                     <div className={styles.info}>

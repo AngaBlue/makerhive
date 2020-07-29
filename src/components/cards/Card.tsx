@@ -34,7 +34,7 @@ export default function Card(props: {
                     title={
                         <div className={styles.title}>
                             {props.name}
-                            {props.editable !== 0 && (
+                            {!!props.editable && (
                                 <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}>
                                     <Button type="ghost" icon={<EditOutlined />} className={styles.edit}/>
                                 </Link>
