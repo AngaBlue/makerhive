@@ -13,9 +13,11 @@ function App() {
     const user = useSelector(
         (state: RootState) => state.user,
         (l, r) => {
-            let old = r && r.data? r.data.rank.id : null;
+            let old = r && r.data ? r.data.rank.id : null;
             let updated = l && l.data ? l.data.rank.id : null;
-            if (old !== updated && l.requested) window.location.reload()
+            if (old !== updated && l.requested && l.loading) {
+                window.location.reload();
+            }
             return old === updated;
         }
     );

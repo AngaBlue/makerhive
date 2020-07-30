@@ -54,7 +54,7 @@ export default function Users() {
                             title: "Name",
                             dataIndex: "name",
                             render: (name, user) => (
-                                <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`} className={styles.link}>{user.name}</Link>
+                                <Link to={`/admin/user/${user.id}/${URLSafe(user.name)}`} className={styles.link}>{user.name}</Link>
                             )
                         },
                         { title: "Email", dataIndex: "email", responsive: ["md"] },
@@ -79,7 +79,7 @@ export default function Users() {
                                     <Link to={`/admin/edit-user/${user.id}/${URLSafe(user.name)}`}>
                                         <GhostButton className={styles.iconButton} icon={<EditOutlined />} />
                                     </Link>
-                                    <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`}>
+                                    <Link to={`/admin/user/${user.id}/${URLSafe(user.name)}`}>
                                         <GhostButton className={styles.iconButton} icon={<UserOutlined />} />
                                     </Link>
                                 </>

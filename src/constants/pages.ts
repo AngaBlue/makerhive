@@ -11,6 +11,7 @@ const Users = React.lazy(() => import("../pages/admin/Users"));
 const Borrow = React.lazy(() => import("../pages/Borrow"));
 const Reserve = React.lazy(() => import("../pages/Reserve"));
 const EditUser = React.lazy(() => import("../pages/admin/EditUser"));
+const User = React.lazy(() => import("../pages/admin/User"));
 
 const pages: Page[] = [
     new Page({
@@ -76,6 +77,13 @@ const pages: Page[] = [
         name: "Edit User",
         component: EditUser,
         route: "/admin/edit-user/:id/:name",
+        authenticated: true,
+        permissions: 5,
+    }),
+    new Page({
+        name: "User Profile",
+        component: User,
+        route: "/admin/user/:id/:name",
         authenticated: true,
         permissions: 5,
     })
