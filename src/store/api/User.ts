@@ -18,9 +18,10 @@ export interface UserProfile extends User {
     loans: Loan[];
 }
 
-export async function fetchUser() {
+export async function fetchUser(id?: number) {
     return (await request({
-        type: "GET_USER"
+        type: "GET_USER",
+        payload: id
     })) as APIResponse<User>;
 }
 
@@ -35,4 +36,13 @@ export async function fetchAllUsers() {
     return (await request({
         type: "GET_ALL_USERS"
     })) as APIResponse<User[]>;
+}
+
+export type EditUserPayload = { id: User["id"], rank: number } & Pick<User, "name" | "email">
+
+export async function editUser(payload: Partial<EditUserPayload>) {
+    return (await request({
+        type: "PATCH_USER",
+        payload
+    })) as APIResponse<User>;
 }

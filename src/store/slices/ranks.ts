@@ -1,19 +1,19 @@
-import { Loan, fetchAllLoans } from "../api/Loan";
 import { AppThunk } from "../store";
 import AsyncSlice, { getAsyncOptions, throttle } from "../AsyncSlice";
+import { fetchAllRanks, Rank } from "../api/Rank";
 
-type LoansState = Loan[] | null;
+type RanksState = Rank[] | null;
 
-const { slice, reducer } = AsyncSlice<LoansState>({ name: "loans", initialState: null, reducers: {} });
+const { slice, reducer } = AsyncSlice<RanksState>({ name: "ranks", initialState: null, reducers: {} });
 
 export const { getDataStart, getDataFailure, getDataSuccess } = slice.actions;
 
-export const getLoans = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
+export const getRanks = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
     if (options) {
         if (options.throttle && throttle(options.throttle.requested, options.throttle.timeout)) return;
     }
     dispatch(getDataStart());
-    const res = await fetchAllLoans();
+    const res = await fetchAllRanks();
     if (res.error) dispatch(getDataFailure(res.error));
     if (res.payload !== undefined) dispatch(getDataSuccess(res.payload));
 };

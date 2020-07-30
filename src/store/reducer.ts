@@ -5,13 +5,15 @@ import users from "./slices/users";
 import items from "./slices/items";
 import profile from "./slices/profile";
 import loans from "./slices/loans";
+import ranks from "./slices/ranks";
 
 const rootReducer = combineReducers({
     user,
     users,
     loans,
     items,
-    profile
+    profile,
+    ranks
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

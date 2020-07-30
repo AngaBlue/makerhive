@@ -17,6 +17,12 @@ export async function deleteReservation(id: Reservation["id"]) {
     })) as APIResponse<undefined>;
 }
 
+export async function fetchAllReservations() {
+    return (await request({
+        type: "GET_ALL_RESERVATIONS"
+    })) as APIResponse<Reservation[]>;
+}
+
 export async function reserveItem(reservation: {
     item: number,
     quantity: number,
