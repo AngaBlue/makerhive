@@ -8,7 +8,7 @@ const { slice, reducer } = AsyncSlice<ReservationsState>({ name: "loans", initia
 
 export const { getDataStart, getDataFailure, getDataSuccess } = slice.actions;
 
-export const getLoans = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
+export const getReservations = (options?: getAsyncOptions): AppThunk => async (dispatch) => {
     if (options) {
         if (options.throttle && throttle(options.throttle.requested, options.throttle.timeout)) return;
     }

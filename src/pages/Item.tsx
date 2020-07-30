@@ -52,15 +52,31 @@ export default function Item() {
             { title: "Note", dataIndex: "note", responsive: ["md"] }
         ];
         if (user && user.rank.permissions >= 5)
-            reservationColumns.push({ title: "User", dataIndex: "user", render: (v) => v.name });
+            reservationColumns.splice(1, 0, {
+                title: "User",
+                dataIndex: "user",
+                render: (user) => (
+                    <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`} className={styles.link}>
+                        {user.name}
+                    </Link>
+                )
+            });
         //Loan Table Columns
         const loanColumns: ColumnsType<Loan> = [
             { title: "Quantity", dataIndex: "quantity" },
-            { title: "Borrowed", dataIndex: "borrowed", render: (v) => moment(v).fromNow() },
+            { title: "Borrowed", dataIndex: "borrowed", render: (v, user) => moment(v).fromNow() },
             { title: "Note", dataIndex: "note", responsive: ["md"] }
         ];
         if (user && user.rank.permissions >= 5)
-            loanColumns.push({ title: "User", dataIndex: "user", render: (v) => v.name });
+            loanColumns.splice(1, 0, {
+                title: "User",
+                dataIndex: "user",
+                render: (user) => (
+                    <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`} className={styles.link}>
+                        {user.name}
+                    </Link>
+                )
+            });
         return (
             <div className={styles.main}>
                 <Row gutter={[16, 16]}>
@@ -78,7 +94,8 @@ export default function Item() {
                         </Typography.Paragraph>
                         <Typography.Text strong>Location:</Typography.Text> {state.data.location || "Unknown"} <br />
                         <Typography.Text strong>Quantity:</Typography.Text> {state.data.quantity} <br />
-                        <Typography.Text strong>Available:</Typography.Text> {state.data.available} <br /><br />
+                        <Typography.Text strong>Available:</Typography.Text> {state.data.available} <br />
+                        <br />
                         <Space>
                             <Link to={`/borrow/${state.data.id}/${URLSafe(state.data.name)}`}>
                                 <Button type="primary">Borrow</Button>

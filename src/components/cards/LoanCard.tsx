@@ -7,7 +7,6 @@ import { EyeOutlined, LogoutOutlined, LoadingOutlined } from "@ant-design/icons"
 import styles from "./LoanCard.module.less";
 import { Link } from "react-router-dom";
 import URLSafe from "../URLSafe";
-import { useDispatch } from "react-redux";
 import GhostButton from "../GhostButton";
 
 enum LoanStatus {
@@ -16,8 +15,7 @@ enum LoanStatus {
     OVERDUE = "Overdue"
 }
 
-export function LoanCard(props: Loan) {
-    const dispatch = useDispatch();
+export function LoanCard(props: Loan & { remove(id: number): any }) {
     const [details, setDetails] = useState(false);
     const [state, setState] = useState({
         loading: false
@@ -31,10 +29,7 @@ export function LoanCard(props: Loan) {
         setState({ loading: false });
         if (!response.error) {
             notification.success({ placement: "bottomRight", message: "Loan Returned" });
-            dispatch({
-                type: "profile/removeLoan",
-                payload: props.id
-            });
+            props.remove(props.id);
         }
     };
     let status = LoanStatus.ACTIVE;
@@ -45,6 +40,7 @@ export function LoanCard(props: Loan) {
             <Card
                 name={props.item.name}
                 image={props.item.image}
+                url={`/items/${props.item.id}/${URLSafe(props.item.name)}`}
                 actions={[
                     <GhostButton icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>
                         Details
@@ -73,6 +69,7 @@ export function LoanCard(props: Loan) {
                     </div>
                 }
                 overlay={status === LoanStatus.OVERDUE ? "rgba(255,0,0,0.2)" : undefined}
+                disabled={state.loading}
             />
             <Modal
                 title="Loan Details"

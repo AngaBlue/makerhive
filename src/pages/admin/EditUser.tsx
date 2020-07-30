@@ -83,7 +83,7 @@ export default function EditUser() {
         return (
             <div className={styles.main}>
                 <Typography.Title>Edit User</Typography.Title>
-                <Form layout="vertical" className={styles.form} onFinish={submit} initialValues={{...user.data, rank: user.data.rank.name}} form={form}>
+                <Form layout="vertical" className={styles.form} onFinish={submit} initialValues={{...user.data, rank: user.data.rank.id}} form={form}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -96,10 +96,10 @@ export default function EditUser() {
                         rules={[{ required: true, message: "Please enter an email." }]}>
                         <Input placeholder="Email..." type="email" />
                     </Form.Item>
-                    <Form.Item label="Rank" name="rank" rules={[{ required: true, message: "Please select a rank." }]}>
-                        <Select defaultValue={user.data.rank.id}>
+                    <Form.Item label="Rank" name="rank" rules={[{ required: true, message: "Please select a rank." }]} className={styles.dropdown}>
+                        <Select>
                             {ranks.data.map((r) => {
-                                return <Select.Option value={"" + r.id}>{r.name}</Select.Option>
+                                return <Select.Option value={r.id}>{r.name}</Select.Option>
                             })}
                         </Select>
                     </Form.Item>

@@ -1,4 +1,4 @@
-import { DashboardOutlined, AppstoreOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { DashboardOutlined, AppstoreOutlined, PlusOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Page } from "./Page";
 import React from "react";
 
@@ -12,6 +12,7 @@ const Borrow = React.lazy(() => import("../pages/Borrow"));
 const Reserve = React.lazy(() => import("../pages/Reserve"));
 const EditUser = React.lazy(() => import("../pages/admin/EditUser"));
 const User = React.lazy(() => import("../pages/admin/User"));
+const Reservations = React.lazy(() => import("../pages/admin/Reservations"));
 
 const pages: Page[] = [
     new Page({
@@ -83,9 +84,18 @@ const pages: Page[] = [
     new Page({
         name: "User Profile",
         component: User,
-        route: "/admin/user/:id/:name",
+        route: "/admin/users/:id/:name",
         authenticated: true,
         permissions: 5,
+    }),
+    new Page({
+        name: "Reservations",
+        component: Reservations,
+        route: "/admin/reservations",
+        authenticated: true,
+        permissions: 5,
+        nav: true,
+        icon: LogoutOutlined
     })
 ];
 export default pages;

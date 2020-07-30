@@ -77,6 +77,7 @@ export default function Index() {
                         <Card
                             name={item.name}
                             image={item.image}
+                            url={`/items/${item.id}/${URLSafe(item.name)}`}
                             actions={[
                                 <Link to={`/items/${item.id}/${URLSafe(item.name)}`}>
                                     <GhostButton icon={<EyeOutlined />} className={styles.action}>
@@ -104,6 +105,7 @@ export default function Index() {
                             }
                             key={item.id}
                             editable={user.data && user.data.rank.permissions ? item.id : 0}
+                            overlay={item.hidden ? "rgba(240, 242, 245, 0.6)": undefined}
                         />
                     ))}
                 </CardContainer>

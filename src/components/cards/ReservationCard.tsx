@@ -5,13 +5,11 @@ import Card from "./Card";
 import moment from "moment";
 import styles from "./ReservationCard.module.less";
 import { EyeOutlined, DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import URLSafe from "../URLSafe";
 import GhostButton from "../GhostButton";
 
-export function ReservationCard(props: Reservation) {
-    const dispatch = useDispatch();
+export function ReservationCard(props: Reservation & { remove(id: number): any }) {
     const [state, setState] = useState({
         loading: false
     });
@@ -25,10 +23,7 @@ export function ReservationCard(props: Reservation) {
         setState({ loading: false });
         if (!response.error) {
             notification.success({ placement: "bottomRight", message: "Reservation Deleted" });
-            dispatch({
-                type: "profile/removeReservation",
-                payload: props.id
-            });
+            props.remove(props.id)
         }
     };
     return (
@@ -36,6 +31,7 @@ export function ReservationCard(props: Reservation) {
             <Card
                 name={props.item.name}
                 image={props.item.image}
+                url={`/items/${props.item.id}/${URLSafe(props.item.name)}`}
                 disabled={state.loading}
                 actions={[
                     <GhostButton icon={<EyeOutlined />} className={styles.action} onClick={toggleDetails}>

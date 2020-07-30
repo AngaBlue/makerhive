@@ -15,7 +15,11 @@ import Loading from "../components/Loading";
 import { UserProfile } from "../store/api/User";
 import { AsyncState } from "../store/AsyncState";
 
-export default function Dashboard(props: { profile?: AsyncState<UserProfile | null> }) {
+export default function Dashboard(props: {
+    profile: AsyncState<UserProfile | null>;
+    removeReservation?(id: number): any;
+    removeLoan?(id: number): any;
+}) {
     const dispatch = useDispatch();
     const breakpoints = useBreakpoint();
     const { user, profileState } = useSelector((state: RootState) => ({
@@ -36,6 +40,18 @@ export default function Dashboard(props: { profile?: AsyncState<UserProfile | nu
             );
         }
     });
+
+    const removeReservation = (id: number) =>
+        dispatch({
+            type: "profile/removeReservation",
+            payload: id
+        });
+
+    const removeLoan = (id: number) =>
+        dispatch({
+            type: "profile/removeLoan",
+            payload: id
+        });
     if (!user.data) return null;
     return (
         <div className={styles.main}>
@@ -72,7 +88,15 @@ export default function Dashboard(props: { profile?: AsyncState<UserProfile | nu
                 {breakpoints.sm && (
                     <Col>
                         <Avatar
-                            src={`https://makerhive.anga.blue/static/images/user/${props.profile ? profile.data ? profile.data.image : "loading" : profile.data ? profile.data.image : user.data.image }.jpg`}
+                            src={`https://makerhive.anga.blue/static/images/user/${
+                                props.profile
+                                    ? profile.data
+                                        ? profile.data.image
+                                        : "loading"
+                                    : profile.data
+                                    ? profile.data.image
+                                    : user.data.image
+                            }.jpg`}
                             icon={<UserOutlined />}
                             size={128}
                         />
@@ -84,7 +108,7 @@ export default function Dashboard(props: { profile?: AsyncState<UserProfile | nu
                 profile.data.loans.length > 0 ? (
                     <CardContainer className={styles.loans}>
                         {profile.data.loans.map((loan) => (
-                            <LoanCard {...loan} key={loan.id} />
+                            <LoanCard {...loan} remove={props.removeLoan || removeLoan} key={loan.id} />
                         ))}
                     </CardContainer>
                 ) : (
@@ -105,7 +129,11 @@ export default function Dashboard(props: { profile?: AsyncState<UserProfile | nu
                 profile.data.reservations.length > 0 ? (
                     profile.data.reservations.map((reservation) => (
                         <CardContainer className={styles.reservations}>
-                            <ReservationCard {...reservation} key={reservation.id} />
+                            <ReservationCard
+                                {...reservation}
+                                remove={props.removeReservation || removeReservation}
+                                key={reservation.id}
+                            />
                         </CardContainer>
                     ))
                 ) : (

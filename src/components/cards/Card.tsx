@@ -10,6 +10,7 @@ import GhostButton from "../GhostButton";
 export default function Card(props: {
     name: string;
     image?: string;
+    url: string;
     actions?: React.ReactNode[];
     details?: React.ReactNode;
     overlay?: string;
@@ -22,13 +23,15 @@ export default function Card(props: {
                 size="small"
                 className={styles.card}
                 cover={
-                    <div
-                        style={{
-                            backgroundImage: `url(https://makerhive.anga.blue/static/images/item/${props.image}-thumb.jpg),
+                    <Link to={props.url}>
+                        <div
+                            style={{
+                                backgroundImage: `url(https://makerhive.anga.blue/static/images/item/${props.image}-thumb.jpg),
                             url(${logo})`
-                        }}
-                        className={styles.image}
-                    />
+                            }}
+                            className={styles.image}
+                        />
+                    </Link>
                 }
                 actions={props.actions}>
                 <AntCard.Meta
@@ -37,7 +40,7 @@ export default function Card(props: {
                             {props.name}
                             {!!props.editable && (
                                 <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}>
-                                    <GhostButton icon={<EditOutlined />} className={styles.edit}/>
+                                    <GhostButton icon={<EditOutlined />} className={styles.edit} />
                                 </Link>
                             )}
                         </div>

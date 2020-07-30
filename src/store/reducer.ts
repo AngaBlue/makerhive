@@ -5,6 +5,7 @@ import users from "./slices/users";
 import items from "./slices/items";
 import profile from "./slices/profile";
 import loans from "./slices/loans";
+import reservations from "./slices/reservations";
 import ranks from "./slices/ranks";
 
 const rootReducer = combineReducers({
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     loans,
     items,
     profile,
-    ranks
+    ranks,
+    reservations
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

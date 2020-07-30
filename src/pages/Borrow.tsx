@@ -122,11 +122,18 @@ export default function Borrow() {
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    disabled={state.loading || available === 0}
+                                    disabled={state.loading || available === 0 || item.data.hidden}
                                     loading={state.loading}>
                                     Borrow
                                 </Button>
                             </Form.Item>
+                            {!!item.data.hidden && (
+                                <Typography.Paragraph type="danger">
+                                    This item is currently hidden and cannot be borrowed.  To make this item available, please unhide it by{" "}
+                                    <Link to={`/admin/edit-item/${item.data.id}/${URLSafe(item.data.name)}`}>editing</Link>{" "}
+                                    this item.
+                                </Typography.Paragraph>
+                            )}
                             {available === 0 && (
                                 <Typography.Paragraph type="danger">
                                     Sorry, this item is currently unavailable. Please try{" "}
