@@ -88,13 +88,13 @@ export default function EditUser() {
                         label="Name"
                         name="name"
                         rules={[{ required: true, message: "Please enter an user name." }]}>
-                        <Input placeholder="User Name..." />
+                        <Input placeholder="User Name..." maxLength={64}/>
                     </Form.Item>
                     <Form.Item
                         label="Email"
                         name="email"
                         rules={[{ required: true, message: "Please enter an email." }]}>
-                        <Input placeholder="Email..." type="email" />
+                        <Input placeholder="Email..." type="email" maxLength={255}/>
                     </Form.Item>
                     <Form.Item label="Rank" name="rank" rules={[{ required: true, message: "Please select a rank." }]} className={styles.dropdown}>
                         <Select>

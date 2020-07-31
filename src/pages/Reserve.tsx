@@ -113,6 +113,7 @@ export default function Reserve() {
                             <Form.Item label="Reservation" name="note">
                                 <Input.TextArea
                                     placeholder="Reservation note..."
+                                    maxLength={1024}
                                     autoSize={{ minRows: 3, maxRows: 5 }}
                                 />
                             </Form.Item>

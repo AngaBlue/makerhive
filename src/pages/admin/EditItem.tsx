@@ -84,13 +84,13 @@ export default function EditItem() {
                         label="Name"
                         name="name"
                         rules={[{ required: true, message: "Please enter an item name." }]}>
-                        <Input placeholder="Item Name..." />
+                        <Input placeholder="Item Name..." maxLength={128}/>
                     </Form.Item>
                     <Form.Item label="Description" name="description">
-                        <Input.TextArea placeholder="Item description..." autoSize={{ minRows: 3, maxRows: 5 }} />
+                        <Input.TextArea placeholder="Item description..." maxLength={1024} autoSize={{ minRows: 3, maxRows: 5 }} />
                     </Form.Item>
                     <Form.Item label="Location" name="location">
-                        <Input placeholder="Item location..." />
+                        <Input placeholder="Item location..." maxLength={64}/>
                     </Form.Item>
                     <Form.Item label="Image" name="image">
                         <ImageUpload
