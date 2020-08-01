@@ -34,8 +34,6 @@ export default function Borrow() {
     const submit = async (values: Store) => {
         if (!item.data) return;
         setState({ loading: true, error: null });
-        console.log(values)
-        return/*
         let loan = {
             item: item.data.id,
             quantity: values.quantity,
@@ -67,7 +65,7 @@ export default function Borrow() {
             });
             //Redirect Back
             history.goBack();
-        }*/
+        }
     };
     const params = useParams<{ id: string; name: string }>();
     //Fetch Item on Component Mount / When URL params change
@@ -115,11 +113,15 @@ export default function Borrow() {
                                 <InputNumber min={1} max={available} precision={0} />
                             </Form.Item>
                             <Form.Item label="Note" name="note">
-                                <Input.TextArea placeholder="Loan note..." maxLength={1024} autoSize={{ minRows: 3, maxRows: 5 }} />
-                                <Typography.Paragraph>
-                                    If the item is numbered or labelled, please include the label in the notes.
-                                </Typography.Paragraph>
+                                <Input.TextArea
+                                    placeholder="Loan note..."
+                                    maxLength={1024}
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
+                                />
                             </Form.Item>
+                            <Typography.Paragraph>
+                                If the item is numbered or labelled, please include the label in the notes.
+                            </Typography.Paragraph>
                             <Form.Item>
                                 <Button
                                     type="primary"
@@ -131,8 +133,11 @@ export default function Borrow() {
                             </Form.Item>
                             {!!item.data.hidden && (
                                 <Typography.Paragraph type="danger">
-                                    This item is currently hidden and cannot be borrowed.  To make this item available, please unhide it by{" "}
-                                    <Link to={`/admin/edit-item/${item.data.id}/${URLSafe(item.data.name)}`}>editing</Link>{" "}
+                                    This item is currently hidden and cannot be borrowed. To make this item available,
+                                    please unhide it by{" "}
+                                    <Link to={`/admin/edit-item/${item.data.id}/${URLSafe(item.data.name)}`}>
+                                        editing
+                                    </Link>{" "}
                                     this item.
                                 </Typography.Paragraph>
                             )}

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Reservation, deleteReservation } from "../../store/api/Reservation";
+import { deleteReservation, AdminReservation } from "../../store/api/Reservation";
 import { Button, Typography, Popconfirm, Modal, notification } from "antd";
 import Card from "./Card";
 import moment from "moment";
-import styles from "./ReservationCard.module.less";
+import styles from "./AdminReservationCard.module.less";
 import { EyeOutlined, DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../URLSafe";
 import GhostButton from "../GhostButton";
 
-export function ReservationCard(props: Reservation & { remove(id: number): any }) {
+export function AdminReservationCard(props: AdminReservation & { remove(id: number): any }) {
     const [state, setState] = useState({
         loading: false
     });
@@ -52,10 +52,16 @@ export function ReservationCard(props: Reservation & { remove(id: number): any }
                 details={
                     <div className={styles.info}>
                         <Typography.Text>
-                            <Typography.Text strong>Quantity:</Typography.Text> {props.quantity}
+                            <Typography.Text strong>User:</Typography.Text>{" "}
+                            <Link
+                                to={`/admin/users/${props.user.id}/${URLSafe(props.user.name)}`}
+                                className={styles.link}
+                                component={Typography.Link}>
+                                {props.user.name}
+                            </Link>
                         </Typography.Text>
                         <Typography.Text>
-                            <Typography.Text strong>Position:</Typography.Text> #{props.position}
+                            <Typography.Text strong>Quantity:</Typography.Text> {props.quantity}
                         </Typography.Text>
                         <Typography.Text>
                             <Typography.Text strong>Reserved: </Typography.Text>
@@ -76,6 +82,9 @@ export function ReservationCard(props: Reservation & { remove(id: number): any }
                 ]}>
                 <Typography.Text>
                     <Typography.Text strong>ID: </Typography.Text> {props.id}
+                    <br />
+                    <Typography.Text strong>User: </Typography.Text>{" "}
+                    <Link to={`/admin/users/${props.user.id}/${URLSafe(props.user.name)}`}>{props.user.name}</Link>
                     <br />
                     <Typography.Text strong>Position: </Typography.Text> #{props.position}
                     <br />

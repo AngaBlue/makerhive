@@ -16,17 +16,17 @@ export default function Users() {
     const users = useSelector((state: RootState) => state.users);
     //Fetch Users if Not Found / Cache Stale
     useEffect(() => {
-        if (!users.loading) dispatch(getUsers({ throttle: { requested: users.requested, timeout: 5 * 60 * 1000 } }));
+        if (!users.loading) dispatch(getUsers({ throttle: { requested: users.requested, timeout: 30 * 1000 } }));
     });
     //Search
-    const [name, setName] = useState("")
+    const [name, setName] = useState("");
     const setSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.toLowerCase().trim();        
-        if (value !== name) setName(value)
-    }
-    let values = users.data || []
+        let value = e.target.value.toLowerCase().trim();
+        if (value !== name) setName(value);
+    };
+    let values = users.data || [];
     if (name) {
-        values = values.filter(v => v.name.toLowerCase().includes(name))
+        values = values.filter((v) => v.name.toLowerCase().includes(name));
     }
     return (
         <div className={styles.main}>
@@ -54,7 +54,9 @@ export default function Users() {
                             title: "Name",
                             dataIndex: "name",
                             render: (name, user) => (
-                                <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`} className={styles.link}>{user.name}</Link>
+                                <Link to={`/admin/users/${user.id}/${URLSafe(user.name)}`} className={styles.link}>
+                                    {user.name}
+                                </Link>
                             )
                         },
                         { title: "Email", dataIndex: "email", responsive: ["md"] },

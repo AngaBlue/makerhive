@@ -1,5 +1,5 @@
 import React from "react";
-import { Card as AntCard, Col } from "antd";
+import { Card as AntCard, Col, Typography } from "antd";
 import styles from "./Card.module.less";
 import logo from "../../images/logo.svg";
 import { EditOutlined } from "@ant-design/icons";
@@ -37,7 +37,9 @@ export default function Card(props: {
                 <AntCard.Meta
                     title={
                         <div className={styles.title}>
-                            {props.name}
+                            <Typography.Text ellipsis style={{ color: "inherit" }}>
+                                {props.name}
+                            </Typography.Text>
                             {!!props.editable && (
                                 <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}>
                                     <GhostButton icon={<EditOutlined />} className={styles.edit} />

@@ -55,7 +55,7 @@ export function Nav(props: { close?: () => void }) {
     return (
         <div className={styles.nav}>
             <Link to="/" style={{ display: "contents" }} onClick={props.close}>
-                <img src={banner} alt="Makerhive" className={styles.banner}/>
+                <img src={banner} alt="Makerhive" className={styles.banner} />
             </Link>
             {user.data ? (
                 <Link to="/dashboard" className={styles.user} onClick={props.close}>

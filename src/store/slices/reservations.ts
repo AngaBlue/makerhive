@@ -1,10 +1,24 @@
 import { AppThunk } from "../store";
 import AsyncSlice, { getAsyncOptions, throttle } from "../AsyncSlice";
-import { Reservation, fetchAllReservations } from "../api/Reservation";
+import { fetchAllReservations, AdminReservation } from "../api/Reservation";
+import { PayloadAction } from "@reduxjs/toolkit";
 
-type ReservationsState = Reservation[] | null;
+type ReservationsState = AdminReservation[] | null;
 
-const { slice, reducer } = AsyncSlice<ReservationsState>({ name: "loans", initialState: null, reducers: {} });
+const { slice, reducer } = AsyncSlice<ReservationsState>({
+    name: "reservations",
+    initialState: null,
+    reducers: {
+        removeReservation: (state, action: PayloadAction<AdminReservation["id"]>) => {
+            if (!state.data) return state;
+            state.data.splice(
+                state.data.findIndex((r) => r.id === action.payload),
+                1
+            );
+            return state;
+        }
+    }
+});
 
 export const { getDataStart, getDataFailure, getDataSuccess } = slice.actions;
 

@@ -57,3 +57,10 @@ export async function editItem(changes: Partial<Item>, image?: Blob) {
         image
     )) as APIResponse<Item>;
 }
+
+export async function deleteItem(id: Item["id"]) {
+    return (await request({
+        type: "DELETE_ITEM",
+        payload: id
+    })) as APIResponse<undefined>;
+}

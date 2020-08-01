@@ -5,17 +5,18 @@ import { Store } from "antd/lib/form/interface";
 import { APIError } from "../store/api/Error";
 import { Item } from "../store/api/Item";
 import { fetchItem } from "../store/api/Item";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import Error from "./Error";
 import Img from "react-cool-img";
 import logo from "../images/logo.svg";
 import { useDispatch } from "react-redux";
 import { reserveItem } from "../store/api/Reservation";
+import URLSafe from "../components/URLSafe";
 
 export default function Reserve() {
-    const dispatch = useDispatch()
-    const history = useHistory()
+    const dispatch = useDispatch();
+    const history = useHistory();
     //Fetch Item to Edit
     const [item, setItem] = useState<{ loading: boolean; error: APIError | null; data: Item | null }>({
         loading: false,
@@ -31,13 +32,13 @@ export default function Reserve() {
     const [state, setState] = useState<{ loading: boolean; error: APIError | null }>({ loading: false, error: null });
     const [form] = Form.useForm();
     const submit = async (values: Store) => {
-        if (!item.data) return
+        if (!item.data) return;
         setState({ loading: true, error: null });
         let reservation = {
             item: item.data.id,
             quantity: values.quantity,
             note: values.note || ""
-        }
+        };
         //Post Reservation
         let response = await reserveItem(reservation);
         if (response.error) {
@@ -63,7 +64,7 @@ export default function Reserve() {
                 payload: response.payload
             });
             //Redirect Back
-            history.goBack()
+            history.goBack();
         }
     };
     const params = useParams<{ id: string; name: string }>();
@@ -121,11 +122,21 @@ export default function Reserve() {
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    disabled={state.loading}
+                                    disabled={state.loading || !!item.data.hidden}
                                     loading={state.loading}>
                                     Reserve
                                 </Button>
                             </Form.Item>
+                            {!!item.data.hidden && (
+                                <Typography.Paragraph type="danger">
+                                    This item is currently hidden and cannot be reserved. To make this item available,
+                                    please unhide it by{" "}
+                                    <Link to={`/admin/edit-item/${item.data.id}/${URLSafe(item.data.name)}`}>
+                                        editing
+                                    </Link>{" "}
+                                    this item.
+                                </Typography.Paragraph>
+                            )}
                         </Form>
                     </Col>
                 </Row>

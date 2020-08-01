@@ -6,13 +6,14 @@ import styles from "./Index.module.less";
 import { getItems } from "../store/slices/items";
 import CardContainer from "../components/cards/CardContainer";
 import Card from "../components/cards/Card";
-import { EyeOutlined, LogoutOutlined } from "@ant-design/icons";
+import { EyeOutlined, LogoutOutlined, EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../components/URLSafe";
 import Loading from "../components/Loading";
 import GhostButton from "../components/GhostButton";
 
 export default function Index() {
+    //!!!Add Refresh Button
     const dispatch = useDispatch();
     const { items, user } = useSelector((state: RootState) => ({ items: state.items, user: state.user }));
     //Fetch Items if Not Found / Cache Stale
@@ -84,11 +85,19 @@ export default function Index() {
                                         Details
                                     </GhostButton>
                                 </Link>,
-                                <Link to={`/borrow/${item.id}/${URLSafe(item.name)}`}>
-                                    <GhostButton icon={<LogoutOutlined />} className={styles.action}>
-                                        Borrow
-                                    </GhostButton>
-                                </Link>
+                                item.hidden ? (
+                                    <Link to={`/admin/edit-item/${item.id}/${URLSafe(item.name)}`}>
+                                        <GhostButton icon={<EditOutlined />} className={styles.action}>
+                                            Edit
+                                        </GhostButton>
+                                    </Link>
+                                ) : (
+                                    <Link to={`/borrow/${item.id}/${URLSafe(item.name)}`}>
+                                        <GhostButton icon={<LogoutOutlined />} className={styles.action}>
+                                            Borrow
+                                        </GhostButton>
+                                    </Link>
+                                )
                             ]}
                             details={
                                 <div className={styles.info}>
@@ -105,7 +114,7 @@ export default function Index() {
                             }
                             key={item.id}
                             editable={user.data && user.data.rank.permissions ? item.id : 0}
-                            overlay={item.hidden ? "rgba(240, 242, 245, 0.6)": undefined}
+                            overlay={item.hidden ? "rgba(240, 242, 245, 0.6)" : undefined}
                         />
                     ))}
                 </CardContainer>

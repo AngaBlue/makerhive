@@ -38,7 +38,7 @@ export async function fetchAllUsers() {
     })) as APIResponse<User[]>;
 }
 
-export type EditUserPayload = { id: User["id"], rank: number } & Pick<User, "name" | "email">
+export type EditUserPayload = { id: User["id"]; rank: number } & Pick<User, "name" | "email">;
 
 export async function editUser(payload: Partial<EditUserPayload>) {
     return (await request({

@@ -2,49 +2,48 @@ import React, { useEffect, useState } from "react";
 import { Input, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/reducer";
-import styles from "./Reservations.module.less";
+import styles from "./Loans.module.less";
 import CardContainer from "../../components/cards/CardContainer";
 import Loading from "../../components/Loading";
-import { getReservations } from "../../store/slices/reservations";
-import { AdminReservationCard } from "../../components/cards/AdminReservationCard";
+import { getLoans } from "../../store/slices/loans";
+import { AdminLoanCard } from "../../components/cards/AdminLoanCard";
 
-export default function Reservations() {
+export default function Loans() {
     const dispatch = useDispatch();
-    const reservations = useSelector((state: RootState) => state.reservations);
+    const loans = useSelector((state: RootState) => state.loans);
     //Fetch Items if Not Found / Cache Stale
     useEffect(() => {
-        if (!reservations.loading)
-            dispatch(getReservations({ throttle: { requested: reservations.requested, timeout: 60 * 1000 } }));
+        if (!loans.loading) dispatch(getLoans({ throttle: { requested: loans.requested, timeout: 60 * 1000 } }));
     });
 
     const [filters, setFilters] = useState({ name: "", sorting: "time-desc" });
-    let filteredReservations = [...(reservations.data || [])];
-    if (filteredReservations) {
+    let filteredloans = [...(loans.data || [])];
+    if (filteredloans) {
         //Filter Name
         if (filters.name) {
-            filteredReservations = filteredReservations.filter((r) => r.item.name.toLowerCase().includes(filters.name));
+            filteredloans = filteredloans.filter((r) => r.item.name.toLowerCase().includes(filters.name));
         }
         //Sorting
         switch (filters.sorting) {
             case "name-az":
-                filteredReservations.sort((a, b) => {
+                filteredloans.sort((a, b) => {
                     if (a.item.name.toLowerCase() < b.item.name.toLowerCase()) return -1;
                     if (a.item.name.toLowerCase() > b.item.name.toLowerCase()) return 1;
                     return 0;
                 });
                 break;
             case "name-za":
-                filteredReservations.sort((a, b) => {
+                filteredloans.sort((a, b) => {
                     if (a.item.name.toLowerCase() > b.item.name.toLowerCase()) return -1;
                     if (a.item.name.toLowerCase() < b.item.name.toLowerCase()) return 1;
                     return 0;
                 });
                 break;
             case "time-desc":
-                filteredReservations.sort((a, b) => new Date(b.reserved).getTime() - new Date(a.reserved).getTime());
+                filteredloans.sort((a, b) => new Date(b.borrowed).getTime() - new Date(a.borrowed).getTime());
                 break;
             case "time-asc":
-                filteredReservations.sort((a, b) => new Date(a.reserved).getTime() - new Date(b.reserved).getTime());
+                filteredloans.sort((a, b) => new Date(a.borrowed).getTime() - new Date(b.borrowed).getTime());
                 break;
         }
     }
@@ -58,9 +57,9 @@ export default function Reservations() {
         if (sorting !== filters.sorting) setFilters({ ...filters, sorting });
     };
 
-    const removeReservation = (id: number) => {
+    const removeLoan = (id: number) => {
         dispatch({
-            type: "reservations/removeReservation",
+            type: "loans/removeLoan",
             payload: id
         });
     };
@@ -75,14 +74,14 @@ export default function Reservations() {
                     <Select.Option value="name-za">Name (Z-A)</Select.Option>
                 </Select>
             </div>
-            {reservations.data ? (
+            {loans.data ? (
                 <CardContainer className={styles.items}>
-                    {filteredReservations.map((reservation) => (
-                        <AdminReservationCard {...reservation} remove={removeReservation} />
+                    {filteredloans.map((reservation) => (
+                        <AdminLoanCard {...reservation} remove={removeLoan} />
                     ))}
                 </CardContainer>
             ) : (
-                reservations.loading && <Loading />
+                loans.loading && <Loading />
             )}
         </div>
     );

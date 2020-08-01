@@ -40,14 +40,18 @@ export default function ImageUpload(props: {
             className={styles.upload}>
             {props.image || props.default ? (
                 <>
-                <img
-                    src={
-                        props.image ? (window.URL || window.webkitURL).createObjectURL(props.image) : props.default?.url
-                    }
-                    alt={props.image ? props.image.name : props.default?.name}
-                    className={styles.image}
-                />
-                <Typography.Paragraph style={{margin: 0}}>Click to replace image.  All images will be cropped to the 4:3 aspect ratio.</Typography.Paragraph>
+                    <img
+                        src={
+                            props.image
+                                ? (window.URL || window.webkitURL).createObjectURL(props.image)
+                                : props.default?.url
+                        }
+                        alt={props.image ? props.image.name : props.default?.name}
+                        className={styles.image}
+                    />
+                    <Typography.Paragraph style={{ margin: 0 }}>
+                        Click to replace image. All images will be cropped to the 4:3 aspect ratio.
+                    </Typography.Paragraph>
                 </>
             ) : (
                 <>

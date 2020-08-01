@@ -11,4 +11,3 @@ export async function fetchAllRanks() {
         type: "GET_ALL_RANKS"
     })) as APIResponse<Rank[]>;
 }
-

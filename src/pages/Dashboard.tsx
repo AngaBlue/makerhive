@@ -3,7 +3,7 @@ import styles from "./Dashboard.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "..";
 import { getUser } from "../store/slices/user";
-import { Typography, Row, Col, Avatar, Result, Button } from "antd";
+import { Typography, Row, Col, Avatar, Result, Button, Space } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { getProfile } from "../store/slices/profile";
 import { ReservationCard } from "../components/cards/ReservationCard";
@@ -14,6 +14,9 @@ import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import { UserProfile } from "../store/api/User";
 import { AsyncState } from "../store/AsyncState";
+import GhostButton from "../components/GhostButton";
+import { EditOutlined } from "@ant-design/icons";
+import URLSafe from "../components/URLSafe";
 
 export default function Dashboard(props: {
     profile: AsyncState<UserProfile | null>;
@@ -53,50 +56,36 @@ export default function Dashboard(props: {
             payload: id
         });
     if (!user.data) return null;
+    let data = props.profile
+        ? props.profile.data
+            ? props.profile.data
+            : { name: "Loading...", id: 0, image: "Loading...", email: "Loading...", rank: { name: "Loading" } }
+        : profile.data
+        ? profile.data
+        : user.data;
     return (
         <div className={styles.main}>
             <Row className={styles.user} align="middle" justify="space-between">
                 <Col>
                     <Typography.Title>
-                        {props.profile
-                            ? profile.data
-                                ? profile.data.name
-                                : "Loading..."
-                            : profile.data
-                            ? profile.data.name
-                            : user.data.name}
+                        <Space>
+                            {data.name}
+                            {user.data.rank.permissions > 5 && (
+                                <Link to={`/admin/edit-user/${data.id}/${URLSafe(data.name)}`} className={styles.link}>
+                                    <GhostButton
+                                        icon={<EditOutlined style={{ fontSize: 32, color: "rgba(0, 0, 0, 0.85)" }} />}
+                                    />
+                                </Link>
+                            )}
+                        </Space>
                     </Typography.Title>
-                    <Typography.Paragraph>
-                        {props.profile
-                            ? profile.data
-                                ? profile.data.email
-                                : "Loading..."
-                            : profile.data
-                            ? profile.data.email
-                            : user.data.email}
-                    </Typography.Paragraph>
-                    <Typography.Paragraph>
-                        {props.profile
-                            ? profile.data
-                                ? profile.data.rank.name
-                                : "Loading..."
-                            : profile.data
-                            ? profile.data.rank.name
-                            : user.data.rank.name}
-                    </Typography.Paragraph>
+                    <Typography.Paragraph>{data.email}</Typography.Paragraph>
+                    <Typography.Paragraph>{data.rank.name}</Typography.Paragraph>
                 </Col>
                 {breakpoints.sm && (
                     <Col>
                         <Avatar
-                            src={`https://makerhive.anga.blue/static/images/user/${
-                                props.profile
-                                    ? profile.data
-                                        ? profile.data.image
-                                        : "loading"
-                                    : profile.data
-                                    ? profile.data.image
-                                    : user.data.image
-                            }.jpg`}
+                            src={`https://makerhive.anga.blue/static/images/user/${data.image}.jpg`}
                             icon={<UserOutlined />}
                             size={128}
                         />
@@ -127,15 +116,15 @@ export default function Dashboard(props: {
             <Typography.Title level={2}>Reservations</Typography.Title>
             {profile.data ? (
                 profile.data.reservations.length > 0 ? (
-                    profile.data.reservations.map((reservation) => (
-                        <CardContainer className={styles.reservations}>
+                    <CardContainer className={styles.reservations}>
+                        {profile.data.reservations.map((reservation) => (
                             <ReservationCard
                                 {...reservation}
                                 remove={props.removeReservation || removeReservation}
                                 key={reservation.id}
                             />
-                        </CardContainer>
-                    ))
+                        ))}
+                    </CardContainer>
                 ) : (
                     <Result
                         title="No reservations yet"

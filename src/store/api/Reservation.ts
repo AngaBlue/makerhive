@@ -1,5 +1,6 @@
 import { Item } from "./Item";
 import { APIResponse, request } from "./api";
+import { User } from "./User";
 
 export interface Reservation {
     id: number;
@@ -8,6 +9,10 @@ export interface Reservation {
     note: string;
     item: Item;
     position: number;
+}
+
+export interface AdminReservation extends Reservation {
+    user: User;
 }
 
 export async function deleteReservation(id: Reservation["id"]) {
@@ -20,14 +25,17 @@ export async function deleteReservation(id: Reservation["id"]) {
 export async function fetchAllReservations() {
     return (await request({
         type: "GET_ALL_RESERVATIONS"
-    })) as APIResponse<Reservation[]>;
+    })) as APIResponse<AdminReservation[]>;
 }
 
-export async function reserveItem(reservation: {
-    item: number,
-    quantity: number,
-    note?: string
-}, image?: Blob) {
+export async function reserveItem(
+    reservation: {
+        item: number;
+        quantity: number;
+        note?: string;
+    },
+    image?: Blob
+) {
     return (await request(
         {
             type: "POST_RESERVE_ITEM",

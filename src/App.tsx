@@ -17,7 +17,7 @@ function App() {
             let updated = l && l.data ? l.data.rank.id : null;
             if (old !== updated && l.requested && !l.loading) {
                 //Reload After Redux has Done It's Thing
-                process.nextTick(() => window.location.reload())
+                process.nextTick(() => window.location.reload());
             }
             return old === updated;
         }

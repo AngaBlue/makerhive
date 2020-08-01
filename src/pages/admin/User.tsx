@@ -46,13 +46,10 @@ export default function User() {
                 ...profile,
                 data: {
                     ...profile.data,
-                    loans: [
-                        ...profile.data.loans.slice(0, index),
-                        ...profile.data.loans.slice(index + 1)
-                    ]
+                    loans: [...profile.data.loans.slice(0, index), ...profile.data.loans.slice(index + 1)]
                 }
             });
         }
-    }
+    };
     return <Dashboard profile={profile} removeLoan={removeLoan} removeReservation={removeReservation} />;
 }

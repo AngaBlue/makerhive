@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styles from "./EditItem.module.less";
-import { Typography, Form, Input, InputNumber, Button, notification, Switch } from "antd";
+import { Typography, Form, Input, InputNumber, Button, notification, Switch, Space, Popconfirm } from "antd";
 import ImageUpload, { UploadStateType } from "../../components/ImageUpload";
 import { Store } from "antd/lib/form/interface";
 import { APIError } from "../../store/api/Error";
-import { Item, fetchItem, editItem } from "../../store/api/Item";
-import { useParams } from "react-router-dom";
+import { Item, fetchItem, editItem, deleteItem } from "../../store/api/Item";
+import { useParams, useHistory } from "react-router-dom";
 import Loading from "../../components/Loading";
 import Error from "../Error";
+import { useDispatch } from "react-redux";
 
 export default function EditItem() {
+    const dispatch = useDispatch();
+    const history = useHistory();
     const [item, setItem] = useState<{ loading: boolean; error: APIError | null; data: Item | null }>({
         loading: false,
         error: null,
@@ -62,8 +65,43 @@ export default function EditItem() {
             setItem({ ...item, data: response.payload as Item });
             form.resetFields();
             setImage(null);
+            //Save to Redux
+            dispatch({
+                type: "items/updateItem",
+                payload: response.payload
+            });
         }
     };
+    const removeItem = async () => {
+        if (!item.data) return;
+        //Post Edit
+        setState({ loading: true, error: null });
+        let response = await deleteItem(item.data.id);
+        if (response.error) {
+            //Handle Error Response
+            setState({ loading: false, error: response.error });
+            notification.error({
+                placement: "bottomRight",
+                message: response.error.name,
+                description: response.error.message,
+                duration: 8
+            });
+        } else {
+            //Edit Success
+            setState({ loading: false, error: null });
+            notification.success({
+                placement: "bottomRight",
+                message: "Item Deleted"
+            });
+            //Save to Redux
+            dispatch({
+                type: "items/removeItem",
+                payload: item.data.id
+            });
+            history.goBack();
+        }
+    };
+
     const params = useParams<{ id: string; name: string }>();
     //Fetch Item on Component Mount / When URL params change
     useEffect(() => {
@@ -84,13 +122,17 @@ export default function EditItem() {
                         label="Name"
                         name="name"
                         rules={[{ required: true, message: "Please enter an item name." }]}>
-                        <Input placeholder="Item Name..." maxLength={128}/>
+                        <Input placeholder="Item Name..." maxLength={128} />
                     </Form.Item>
                     <Form.Item label="Description" name="description">
-                        <Input.TextArea placeholder="Item description..." maxLength={1024} autoSize={{ minRows: 3, maxRows: 5 }} />
+                        <Input.TextArea
+                            placeholder="Item description..."
+                            maxLength={1024}
+                            autoSize={{ minRows: 3, maxRows: 5 }}
+                        />
                     </Form.Item>
                     <Form.Item label="Location" name="location">
-                        <Input placeholder="Item location..." maxLength={64}/>
+                        <Input placeholder="Item location..." maxLength={64} />
                     </Form.Item>
                     <Form.Item label="Image" name="image">
                         <ImageUpload
@@ -106,15 +148,32 @@ export default function EditItem() {
                         label="Quantity"
                         name="quantity"
                         rules={[{ required: true, message: "Please enter an item quantity." }]}>
-                        <InputNumber min={1} max={999} precision={0} />
+                        <InputNumber min={1} max={255} precision={0} />
                     </Form.Item>
                     <Form.Item name="hidden" label="Hidden">
                         <Switch defaultChecked={!!item.data.hidden} />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" disabled={state.loading} loading={state.loading}>
-                            Save Changes
-                        </Button>
+                        <Space>
+                            <Button type="primary" htmlType="submit" disabled={state.loading} loading={state.loading}>
+                                Save Changes
+                            </Button>
+                            <Popconfirm
+                                title={
+                                    <Typography.Text>
+                                        <Typography.Text strong>Are you sure want to delete this item?</Typography.Text>
+                                        <br />
+                                        All past and active loans and reservations on this item will also be deleted.
+                                    </Typography.Text>
+                                }
+                                onConfirm={removeItem}
+                                okText="Delete"
+                                cancelText="Cancel">
+                                <Button danger disabled={state.loading} loading={state.loading}>
+                                    Delete Item
+                                </Button>
+                            </Popconfirm>
+                        </Space>
                     </Form.Item>
                 </Form>
             </div>

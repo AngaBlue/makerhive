@@ -12,7 +12,7 @@ import { RootState } from "../../";
 import { getRanks } from "../../store/slices/ranks";
 
 export default function EditUser() {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const ranks = useSelector((state: RootState) => state.ranks);
     const [user, setUser] = useState<{ loading: boolean; error: APIError | null; data: User | null }>({
         loading: false,
@@ -83,23 +83,32 @@ export default function EditUser() {
         return (
             <div className={styles.main}>
                 <Typography.Title>Edit User</Typography.Title>
-                <Form layout="vertical" className={styles.form} onFinish={submit} initialValues={{...user.data, rank: user.data.rank.id}} form={form}>
+                <Form
+                    layout="vertical"
+                    className={styles.form}
+                    onFinish={submit}
+                    initialValues={{ ...user.data, rank: user.data.rank.id }}
+                    form={form}>
                     <Form.Item
                         label="Name"
                         name="name"
                         rules={[{ required: true, message: "Please enter an user name." }]}>
-                        <Input placeholder="User Name..." maxLength={64}/>
+                        <Input placeholder="User Name..." maxLength={64} />
                     </Form.Item>
                     <Form.Item
                         label="Email"
                         name="email"
                         rules={[{ required: true, message: "Please enter an email." }]}>
-                        <Input placeholder="Email..." type="email" maxLength={255}/>
+                        <Input placeholder="Email..." type="email" maxLength={255} />
                     </Form.Item>
-                    <Form.Item label="Rank" name="rank" rules={[{ required: true, message: "Please select a rank." }]} className={styles.dropdown}>
+                    <Form.Item
+                        label="Rank"
+                        name="rank"
+                        rules={[{ required: true, message: "Please select a rank." }]}
+                        className={styles.dropdown}>
                         <Select>
                             {ranks.data.map((r) => {
-                                return <Select.Option value={r.id}>{r.name}</Select.Option>
+                                return <Select.Option value={r.id}>{r.name}</Select.Option>;
                             })}
                         </Select>
                     </Form.Item>

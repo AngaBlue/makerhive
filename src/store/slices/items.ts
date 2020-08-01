@@ -9,6 +9,21 @@ const reducers = {
     addItem: (state: AsyncState<ItemsState>, action: PayloadAction<Item>) => {
         if (state.data) state.data.push(action.payload);
         else state.data = [action.payload];
+    },
+    removeItem: (state: AsyncState<ItemsState>, action: PayloadAction<Item["id"]>) => {
+        if (!state.data) return state;
+        state.data.splice(
+            state.data.findIndex((i) => i.id === action.payload),
+            1
+        );
+        return state;
+    },
+    updateItem: (state: AsyncState<ItemsState>, action: PayloadAction<Item>) => {
+        if (!state.data) return state;
+        let index = state.data.findIndex((i) => i.id === action.payload.id);
+        if (index === -1) return state;
+        state.data[index] = action.payload;
+        return state;
     }
 };
 
