@@ -15,13 +15,14 @@ import Loading from "../components/Loading";
 import { UserProfile } from "../store/api/User";
 import { AsyncState } from "../store/AsyncState";
 import GhostButton from "../components/GhostButton";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, ReloadOutlined } from "@ant-design/icons";
 import URLSafe from "../components/URLSafe";
 
 export default function Dashboard(props: {
     profile: AsyncState<UserProfile | null>;
     removeReservation?(id: number): any;
     removeLoan?(id: number): any;
+    refresh?(): any;
 }) {
     const dispatch = useDispatch();
     const breakpoints = useBreakpoint();
@@ -55,6 +56,17 @@ export default function Dashboard(props: {
             type: "profile/removeLoan",
             payload: id
         });
+
+    const refresh = () => {
+        if (props.refresh) return props.refresh();
+        if (user.data)
+            dispatch(
+                getProfile({
+                    payload: user.data.id
+                })
+            );
+    };
+
     if (!user.data) return null;
     let data = props.profile
         ? props.profile.data
@@ -92,7 +104,15 @@ export default function Dashboard(props: {
                     </Col>
                 )}
             </Row>
-            <Typography.Title level={2}>Loans</Typography.Title>
+            <Typography.Title level={2} className={styles.loansTitle}>
+                Loans
+                <Button
+                    icon={<ReloadOutlined />}
+                    loading={props.profile ? props.profile.loading : profile.loading}
+                    onClick={refresh}
+                    className={styles.refresh}
+                />
+            </Typography.Title>
             {profile.data ? (
                 profile.data.loans.length > 0 ? (
                     <CardContainer className={styles.loans}>

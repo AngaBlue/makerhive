@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Select } from "antd";
+import { Input, Select, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/reducer";
 import styles from "./Reservations.module.less";
@@ -7,6 +7,7 @@ import CardContainer from "../../components/cards/CardContainer";
 import Loading from "../../components/Loading";
 import { getReservations } from "../../store/slices/reservations";
 import { AdminReservationCard } from "../../components/cards/AdminReservationCard";
+import { ReloadOutlined } from "@ant-design/icons";
 
 export default function Reservations() {
     const dispatch = useDispatch();
@@ -64,6 +65,11 @@ export default function Reservations() {
             payload: id
         });
     };
+
+    //Force Refresh
+    const refresh = () => {
+        dispatch(getReservations());
+    };
     return (
         <div className={styles.index}>
             <div className={styles.filters}>
@@ -74,6 +80,12 @@ export default function Reservations() {
                     <Select.Option value="name-az">Name (A-Z)</Select.Option>
                     <Select.Option value="name-za">Name (Z-A)</Select.Option>
                 </Select>
+                <Button
+                    icon={<ReloadOutlined />}
+                    loading={reservations.loading}
+                    onClick={refresh}
+                    className={styles.refresh}
+                />
             </div>
             {reservations.data ? (
                 <CardContainer className={styles.items}>

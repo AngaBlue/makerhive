@@ -19,10 +19,19 @@ export default function User() {
         try {
             id = parseInt(params.id);
         } catch (error) {}
-        //No User ID
+        //User ID
         if (id) fetchDetails(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id]);
+    //Force Refresh
+    const refresh = () => {
+        let id: number | null = null;
+        try {
+            id = parseInt(params.id);
+        } catch (error) {}
+        //User ID
+        if (id) fetchDetails(id);
+    };
     const removeReservation = (id: number) => {
         if (profile.data) {
             let index = profile.data.reservations.findIndex((v) => v.id === id);
@@ -51,5 +60,7 @@ export default function User() {
             });
         }
     };
-    return <Dashboard profile={profile} removeLoan={removeLoan} removeReservation={removeReservation} />;
+    return (
+        <Dashboard profile={profile} removeLoan={removeLoan} removeReservation={removeReservation} refresh={refresh} />
+    );
 }

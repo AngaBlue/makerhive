@@ -1,11 +1,3 @@
-Ensure redux updates store appropriately (with reasonable throttle times, possibly force reload???)
-    Edit Item
-    Add Item
-    Users
-    Reservations
-    Loans
-    Dashboard
-
 Backend
 -------
 Hash images by image rather than timestamp (not essential)

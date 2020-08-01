@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Input, Select, Typography } from "antd";
+import { Input, Select, Typography, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/reducer";
 import styles from "./Index.module.less";
 import { getItems } from "../store/slices/items";
 import CardContainer from "../components/cards/CardContainer";
 import Card from "../components/cards/Card";
-import { EyeOutlined, LogoutOutlined, EditOutlined } from "@ant-design/icons";
+import { EyeOutlined, LogoutOutlined, EditOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../components/URLSafe";
 import Loading from "../components/Loading";
@@ -18,7 +18,7 @@ export default function Index() {
     const { items, user } = useSelector((state: RootState) => ({ items: state.items, user: state.user }));
     //Fetch Items if Not Found / Cache Stale
     useEffect(() => {
-        if (!items.loading) dispatch(getItems({ throttle: { requested: items.requested, timeout: 5 * 60 * 1000 } }));
+        if (!items.loading) dispatch(getItems({ throttle: { requested: items.requested, timeout: 3 * 60 * 1000 } }));
     });
 
     const [filters, setFilters] = useState({ name: "", sorting: "name-az" });
@@ -61,6 +61,11 @@ export default function Index() {
     const setSorting = (sorting: string) => {
         if (sorting !== filters.sorting) setFilters({ ...filters, sorting });
     };
+
+    //Force Refresh
+    const refresh = () => {
+        dispatch(getItems());
+    };
     return (
         <div className={styles.index}>
             <div className={styles.filters}>
@@ -71,6 +76,12 @@ export default function Index() {
                     <Select.Option value="quantity-desc">Quantity (Desc)</Select.Option>
                     <Select.Option value="quantity-asc">Quantity (Asc)</Select.Option>
                 </Select>
+                <Button
+                    icon={<ReloadOutlined />}
+                    loading={items.loading}
+                    onClick={refresh}
+                    className={styles.refresh}
+                />
             </div>
             {items.data ? (
                 <CardContainer className={styles.items}>

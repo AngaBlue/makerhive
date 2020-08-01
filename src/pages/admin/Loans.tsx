@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Select } from "antd";
+import { Input, Select, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/reducer";
 import styles from "./Loans.module.less";
@@ -7,13 +7,14 @@ import CardContainer from "../../components/cards/CardContainer";
 import Loading from "../../components/Loading";
 import { getLoans } from "../../store/slices/loans";
 import { AdminLoanCard } from "../../components/cards/AdminLoanCard";
+import { ReloadOutlined } from "@ant-design/icons";
 
 export default function Loans() {
     const dispatch = useDispatch();
     const loans = useSelector((state: RootState) => state.loans);
     //Fetch Items if Not Found / Cache Stale
     useEffect(() => {
-        if (!loans.loading) dispatch(getLoans({ throttle: { requested: loans.requested, timeout: 60 * 1000 } }));
+        if (!loans.loading) dispatch(getLoans({ throttle: { requested: loans.requested, timeout: 3 * 60 * 1000 } }));
     });
 
     const [filters, setFilters] = useState({ name: "", sorting: "time-desc" });
@@ -63,6 +64,11 @@ export default function Loans() {
             payload: id
         });
     };
+
+    //Force Refresh
+    const refresh = () => {
+        dispatch(getLoans());
+    };
     return (
         <div className={styles.index}>
             <div className={styles.filters}>
@@ -73,6 +79,12 @@ export default function Loans() {
                     <Select.Option value="name-az">Name (A-Z)</Select.Option>
                     <Select.Option value="name-za">Name (Z-A)</Select.Option>
                 </Select>
+                <Button
+                    icon={<ReloadOutlined />}
+                    loading={loans.loading}
+                    onClick={refresh}
+                    className={styles.refresh}
+                />
             </div>
             {loans.data ? (
                 <CardContainer className={styles.items}>

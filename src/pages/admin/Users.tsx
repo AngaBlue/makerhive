@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Users.module.less";
-import { Typography, Table, Avatar, Input } from "antd";
+import { Typography, Table, Avatar, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/reducer";
 import { getUsers } from "../../store/slices/users";
 import Loading from "../../components/Loading";
 import moment from "moment";
-import { UserOutlined, EditOutlined } from "@ant-design/icons";
+import { UserOutlined, EditOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import URLSafe from "../../components/URLSafe";
 import GhostButton from "../../components/GhostButton";
@@ -16,7 +16,7 @@ export default function Users() {
     const users = useSelector((state: RootState) => state.users);
     //Fetch Users if Not Found / Cache Stale
     useEffect(() => {
-        if (!users.loading) dispatch(getUsers({ throttle: { requested: users.requested, timeout: 30 * 1000 } }));
+        if (!users.loading) dispatch(getUsers({ throttle: { requested: users.requested, timeout: 3 * 60 * 1000 } }));
     });
     //Search
     const [name, setName] = useState("");
@@ -28,11 +28,21 @@ export default function Users() {
     if (name) {
         values = values.filter((v) => v.name.toLowerCase().includes(name));
     }
+    //Force Refresh
+    const refresh = () => {
+        dispatch(getUsers());
+    };
     return (
         <div className={styles.main}>
             <Typography.Title>Users</Typography.Title>
             <div className={styles.filters}>
                 <Input.Search placeholder="Search users..." onChange={setSearch} className={styles.search} />
+                <Button
+                    icon={<ReloadOutlined />}
+                    loading={users.loading}
+                    onClick={refresh}
+                    className={styles.refresh}
+                />
             </div>
             {users.data ? (
                 <Table
