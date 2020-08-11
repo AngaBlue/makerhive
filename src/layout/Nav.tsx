@@ -58,11 +58,12 @@ export function Nav(props: { close?: () => void }) {
                 <img src={banner} alt="Makerhive" className={styles.banner} />
             </Link>
             {user.data ? (
-                <Link to="/dashboard" className={styles.user} onClick={props.close}>
+                <Link to="/dashboard" className={styles.user} onClick={props.close} aria-label="Dashboard">
                     <Avatar
                         src={`https://makerhive.anga.blue/static/images/user/${user.data.image}.jpg`}
                         icon={<UserOutlined />}
                         size="large"
+                        alt={user.data.name}
                     />
                     <Typography.Text className={styles.username}>{user.data.name}</Typography.Text>
                 </Link>

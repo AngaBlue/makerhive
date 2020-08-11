@@ -23,7 +23,7 @@ export default function Card(props: {
                 size="small"
                 className={styles.card}
                 cover={
-                    <Link to={props.url}>
+                    <Link to={props.url} aria-label={props.name}>
                         <div
                             style={{
                                 backgroundImage: `url(https://makerhive.anga.blue/static/images/item/${props.image}-thumb.jpg),
@@ -41,7 +41,7 @@ export default function Card(props: {
                                 {props.name}
                             </Typography.Text>
                             {!!props.editable && (
-                                <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}>
+                                <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`} aria-label={"Edit " + props.name}>
                                     <GhostButton icon={<EditOutlined />} className={styles.edit} />
                                 </Link>
                             )}

@@ -69,8 +69,13 @@ export default function Index() {
     return (
         <div className={styles.index}>
             <div className={styles.filters}>
-                <Input.Search placeholder="Search items..." onChange={setNameFilter} className={styles.search} />
-                <Select defaultValue="name-az" onSelect={setSorting} className={styles.sorting}>
+                <Input.Search
+                    placeholder="Search items..."
+                    onChange={setNameFilter}
+                    className={styles.search}
+                    aria-label="Search"
+                />
+                <Select defaultValue="name-az" onSelect={setSorting} className={styles.sorting} aria-label="Sort Items">
                     <Select.Option value="name-az">Name (A-Z)</Select.Option>
                     <Select.Option value="name-za">Name (Z-A)</Select.Option>
                     <Select.Option value="quantity-desc">Quantity (Desc)</Select.Option>
