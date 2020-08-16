@@ -11,6 +11,7 @@ const reducers = {
         else state.data = [action.payload];
     },
     removeItem: (state: AsyncState<ItemsState>, action: PayloadAction<Item["id"]>) => {
+        //Find Item By Index, Remove from Array
         if (!state.data) return state;
         state.data.splice(
             state.data.findIndex((i) => i.id === action.payload),
@@ -19,6 +20,7 @@ const reducers = {
         return state;
     },
     updateItem: (state: AsyncState<ItemsState>, action: PayloadAction<Item>) => {
+        //Find Item by Index, Update info
         if (!state.data) return state;
         let index = state.data.findIndex((i) => i.id === action.payload.id);
         if (index === -1) return state;

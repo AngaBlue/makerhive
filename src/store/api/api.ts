@@ -10,6 +10,7 @@ export async function request(req: APIRequest, image?: Blob) {
     };
     let data: string | FormData;
     let headers: Record<string, string> = {};
+    //Add Relevant Request Headers
     if (image) {
         let formData = new FormData();
         formData.append("image", image);
@@ -20,6 +21,7 @@ export async function request(req: APIRequest, image?: Blob) {
         headers["Content-Type"] = "application/json";
     }
     try {
+        //Send Request, Return Response
         let response: APIResponse<any> = await (
             await fetch("https://makerhive.anga.blue/api", {
                 method: "POST",
@@ -30,6 +32,7 @@ export async function request(req: APIRequest, image?: Blob) {
         ).json();
         return response;
     } catch (error) {
+        //Error Whilst Making Request: Connection Error
         console.error(error);
         notification.error({
             placement: "bottomRight",
@@ -40,8 +43,8 @@ export async function request(req: APIRequest, image?: Blob) {
             id: body.id,
             type: body.type,
             error: {
-                name: "API Error",
-                message: "Unknown API error"
+                name: "Connection Error",
+                message: "An error occurred whilst communicating with the server."
             }
         } as APIResponse<undefined>;
     }

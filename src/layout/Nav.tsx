@@ -11,11 +11,13 @@ import { UserOutlined } from "@ant-design/icons";
 import banner from "../images/banner.svg";
 import pages from "../constants/pages";
 
+//Mobile Nav Provides a Toggleable Drawer for the Nav
 export function MobileNav() {
     const [state, setState] = React.useState({ open: false });
     const close = () => setState({ open: false });
     return (
         <>
+            {/* Top Nav Bar */}
             <div className={styles.topNav}>
                 <Link to="/">
                     <img src={banner} alt="Makerhive" className={styles.banner} />
@@ -25,6 +27,7 @@ export function MobileNav() {
                     style={{ fontSize: "32px", height: "max-content" }}
                 />
             </div>
+            {/* Toggleable Drawer*/}
             <Drawer
                 onClose={close}
                 visible={state.open}
@@ -45,6 +48,7 @@ export function Nav(props: { close?: () => void }) {
     useEffect(() => {
         if (!user.loading) dispatch(getUser({ throttle: { requested: user.requested, timeout: 5 * 60 * 1000 } }));
     });
+    //Filter pages that are set to be displayed on the nav, and pages that the user has permission to access.
     let userPerms = user.data ? user.data.rank.permissions : -10;
     let navPages = pages.filter((p) => {
         if (!p.nav) return false;
@@ -57,6 +61,7 @@ export function Nav(props: { close?: () => void }) {
             <Link to="/" style={{ display: "contents" }} onClick={props.close}>
                 <img src={banner} alt="Makerhive" className={styles.banner} />
             </Link>
+            {/* User Name/Loading/Login Button */}
             {user.data ? (
                 <Link to="/dashboard" className={styles.user} onClick={props.close} aria-label="Dashboard">
                     <Avatar
@@ -79,6 +84,7 @@ export function Nav(props: { close?: () => void }) {
                     </a>
                 </div>
             )}
+            {/* Map All Filtered Pages to Nav */}
             <Menu selectedKeys={[location.pathname]} mode="vertical" onClick={props.close} className={styles.menu}>
                 {navPages.map((page) => {
                     return (

@@ -8,6 +8,8 @@ import loans from "./slices/loans";
 import reservations from "./slices/reservations";
 import ranks from "./slices/ranks";
 
+//Combine All difference slices into one central store
+
 const rootReducer = combineReducers({
     user,
     users,

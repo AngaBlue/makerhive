@@ -64,6 +64,7 @@ export function ReservationCard(props: Reservation & { remove(id: number): any }
                     </div>
                 }
             />
+            {/* Reservatiom Modal Details */}
             <Modal
                 title="Reservation Details"
                 visible={details}

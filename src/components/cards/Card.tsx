@@ -7,6 +7,8 @@ import URLSafe from "../URLSafe";
 import { Link } from "react-router-dom";
 import GhostButton from "../GhostButton";
 
+//Boilerplate Card, Base for AdminLoanCard, AdminReservationCard, LoanCard + ReservationCard
+
 export default function Card(props: {
     name: string;
     image?: string;

@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store/store";
 
+//Export Redux RootState for use throughout the application
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();

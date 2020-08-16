@@ -20,10 +20,11 @@ export function Layout(props: { children: React.ReactNode }) {
                     <MobileNav />
                 </AntLayout.Header>
             )}
-            <AntLayout.Content className={styles.dashboard}>
-                <ScrollTop />
-                <Suspense fallback={<span>Loading...</span>}>{props.children}</Suspense>
-            </AntLayout.Content>
+            <ScrollTop>
+                <AntLayout.Content className={styles.dashboard}>
+                    <Suspense fallback={<span>Loading...</span>}>{props.children}</Suspense>
+                </AntLayout.Content>
+            </ScrollTop>
         </AntLayout>
     );
 }

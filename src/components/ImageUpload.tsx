@@ -6,6 +6,9 @@ import styles from "./ImageUpload.module.less";
 
 export type UploadStateType = File | null;
 
+//Image Upload Component used in Add Item + Edit item
+//Extends Functionality of antd image uploader, providing an image preview, default image, and upload tips.
+
 export default function ImageUpload(props: {
     image: UploadStateType;
     setImage: React.Dispatch<React.SetStateAction<UploadStateType>>;
@@ -23,6 +26,7 @@ export default function ImageUpload(props: {
         return false;
     };
 
+    //Update stored image when Uploader status changes
     const onChange = (info: UploadChangeParam<UploadFile<any>>) => {
         if (info.file.status !== "removed") {
             setFileList([info.file]);
@@ -39,6 +43,7 @@ export default function ImageUpload(props: {
             accept="image/jpeg, image/png;capture=camera"
             className={styles.upload}>
             {props.image || props.default ? (
+                //If Image Present
                 <>
                     <img
                         src={
@@ -54,6 +59,7 @@ export default function ImageUpload(props: {
                     </Typography.Paragraph>
                 </>
             ) : (
+                //If Image not Present
                 <>
                     <p className="ant-upload-drag-icon">
                         <InboxOutlined />

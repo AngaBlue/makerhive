@@ -12,6 +12,7 @@ const { slice, reducer } = AsyncSlice<ProfileState>({
     initialState: null,
     reducers: {
         removeReservation: (state, action: PayloadAction<Reservation["id"]>) => {
+            //Find by index, remove from array
             if (!state.data) return state;
             state.data.reservations.splice(
                 state.data.reservations.findIndex((r) => r.id === action.payload),
@@ -19,6 +20,7 @@ const { slice, reducer } = AsyncSlice<ProfileState>({
             );
         },
         removeLoan: (state, action: PayloadAction<Reservation["id"]>) => {
+            //Find by index, remove from array
             if (!state.data) return state;
             state.data.loans.splice(
                 state.data.loans.findIndex((l) => l.id === action.payload),

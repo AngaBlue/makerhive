@@ -6,7 +6,7 @@ export interface AsyncState<State> {
     requested: Date | null;
     data: State;
 }
-
+//Async State Constructor + Typings
 export default function AsyncState<State>(initialState: State): AsyncState<State> {
     return {
         loading: false,

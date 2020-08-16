@@ -4,6 +4,7 @@ import rootReducer, { RootState } from "./reducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+//Persist State to LocalStore to Cache API responses for instant load times.
 const persistConfig = {
     key: "state",
     storage,
@@ -18,13 +19,6 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-/*if (process.env.NODE_ENV === 'development' && module.hot) {
-    module.hot.accept('./reducer', () => {
-        const newRootReducer = require('./reducer').default
-        store.replaceReducer(newRootReducer)
-    })
-}*/
 
 export type AppDispatch = typeof store.dispatch;
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;

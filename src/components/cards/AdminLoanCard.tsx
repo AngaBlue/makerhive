@@ -32,6 +32,7 @@ export function AdminLoanCard(props: AdminLoan & { remove(id: number): any }) {
             props.remove(props.id);
         }
     };
+    //Calculate Loan Status
     let status = LoanStatus.ACTIVE;
     if (props.returned) status = LoanStatus.RETURNED;
     if (moment(props.borrowed).add(14, "days").isBefore(Date.now())) status = LoanStatus.OVERDUE;
@@ -80,6 +81,7 @@ export function AdminLoanCard(props: AdminLoan & { remove(id: number): any }) {
                 overlay={status === LoanStatus.OVERDUE ? "rgba(255,0,0,0.2)" : undefined}
                 disabled={state.loading}
             />
+            {/* Loan Modal Details */}
             <Modal
                 title="Loan Details"
                 visible={details}

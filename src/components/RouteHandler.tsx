@@ -5,7 +5,7 @@ import { Route } from "react-router-dom";
 import { Rank } from "../store/api/Rank";
 
 const RouteHandler = (props: Page, rank: Rank | null) => {
-    //Conditionally Render Component
+    //Conditionally Render Component, depending on user authorisation + permissions
     if (props.authenticated) {
         if (rank) {
             if (props.permissions !== undefined && rank.permissions < props.permissions) {

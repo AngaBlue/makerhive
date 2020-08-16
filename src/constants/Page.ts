@@ -1,4 +1,7 @@
 import { isUndefined } from "util";
+
+//Page Class, used by RouteHandler and Nav. Allows nav and routes to be dynamically updated when a new page is added.
+
 export class Page {
     name: string;
     route: string;

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-//import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
+//Scroll Top on Page Change
 const ScrollTop: React.FC = () => {
-    //const location = useLocation()
+    const location = useLocation();
     useEffect(() => {
         window.scrollTo(0, 0);
-    });
+    }, [location]);
     return null;
 };
 

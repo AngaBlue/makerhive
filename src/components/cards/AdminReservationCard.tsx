@@ -70,6 +70,7 @@ export function AdminReservationCard(props: AdminReservation & { remove(id: numb
                     </div>
                 }
             />
+            {/* Reservatiom Modal Details */}
             <Modal
                 title="Reservation Details"
                 visible={details}

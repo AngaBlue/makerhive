@@ -10,6 +10,7 @@ const { slice, reducer } = AsyncSlice<ReservationsState>({
     initialState: null,
     reducers: {
         removeReservation: (state, action: PayloadAction<AdminReservation["id"]>) => {
+            //Find by index, remove from array
             if (!state.data) return state;
             state.data.splice(
                 state.data.findIndex((r) => r.id === action.payload),

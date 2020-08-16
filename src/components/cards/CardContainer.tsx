@@ -4,6 +4,9 @@ import { Row, Col, Result } from "antd";
 import { RowProps } from "antd/lib/row";
 import Card from "./Card";
 
+//Card Container:
+//Contains cards and sizes them appropriately
+
 export default function CardContainer(props: RowProps & { children: ReturnType<typeof Card>[] }) {
     if (props.children.length === 0) return <Result title="Nothing here yet" />;
     return (

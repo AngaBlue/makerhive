@@ -10,6 +10,11 @@ interface AsyncState<State> {
     data: State;
 }
 
+/* Generic Async Slice
+ * Stores Data with Asynchronous State
+ * 4 States Possible: No data, Requested, Errored, Success
+*/
+
 export default function AsyncSlice<State>(slice: {
     name: string;
     initialState: State;
@@ -53,6 +58,7 @@ export default function AsyncSlice<State>(slice: {
     };
 }
 
+//Throttles Requests to ensure more requests aren't sent multiple times
 export function throttle(requested: AsyncState<any>["requested"], timeout: number): boolean {
     //If Requested Time + Throttle Time > Current Time: Throttle
     if (requested && requested.getTime() + timeout > Date.now()) return true;
