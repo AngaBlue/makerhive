@@ -43,7 +43,9 @@ export default function Card(props: {
                                 {props.name}
                             </Typography.Text>
                             {!!props.editable && (
-                                <Link to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`} aria-label={"Edit " + props.name}>
+                                <Link
+                                    to={`/admin/edit-item/${props.editable}/${URLSafe(props.name)}`}
+                                    aria-label={"Edit " + props.name}>
                                     <GhostButton icon={<EditOutlined />} className={styles.edit} />
                                 </Link>
                             )}

@@ -13,7 +13,7 @@ interface AsyncState<State> {
 /* Generic Async Slice
  * Stores Data with Asynchronous State
  * 4 States Possible: No data, Requested, Errored, Success
-*/
+ */
 
 export default function AsyncSlice<State>(slice: {
     name: string;
